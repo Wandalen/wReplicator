@@ -4,7 +4,7 @@
   "description": "Collection of routines to replicate a complex data structure. It traverses input data structure deeply producing a copy of it.",
   "author": "Kostiantyn Wandalen <wanalen@willbe.so>",
   "license": "MIT",
-  "main": "proto/dwtools/abase/l4/Replicate.s",
+  "main": "proto/dwtools/abase/l4/Replicator.s",
   "files": [
     "proto/dwtools/abase/l4",
     "proto/dwtools/Tools.s",
