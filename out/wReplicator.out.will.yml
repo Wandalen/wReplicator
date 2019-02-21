@@ -4,7 +4,7 @@ about:
   description: >-
     Collection of routines to replicate a complex data structure. It traverses
     input data structure deeply producing a copy of it.
-  version: 0.3.0
+  version: 0.3.1
   enabled: 1
   interpreters:
     - nodejs >= 6.0.0
@@ -283,7 +283,7 @@ build:
       - 'step::export.proto'
 exported:
   proto.export:
-    version: 0.3.0
+    version: 0.3.1
     criterion:
       default: 1
       debug: 1
