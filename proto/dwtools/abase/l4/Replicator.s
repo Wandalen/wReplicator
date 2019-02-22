@@ -133,7 +133,6 @@ function replicate_pre( routine, args )
 
     if( it.down && it.dstWritingDown )
     {
-      debugger;
       _.assert( _.routineIs( it.down.dstWriteDown ) );
       it.down.dstWriteDown( it );
     }
@@ -164,7 +163,7 @@ function replicate_pre( routine, args )
     {
       it.dstWriteDown = function( eit )
       {
-        _.assert( eit.dst !== undefined ); debugger;
+        _.assert( eit.dst !== undefined );
         this.dst.push( eit.dst );
       }
     }
