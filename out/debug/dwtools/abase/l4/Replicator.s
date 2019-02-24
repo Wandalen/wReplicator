@@ -93,6 +93,7 @@ function replicate_pre( routine, args )
     o2.it = o.it;
     o2.iterationCurrent = o.iterationCurrent;
     o2.iteratorExtension = o.iteratorExtension;
+    o2.recursive = o.recursive;
 
     _.assert( arguments.length === 1 );
 
@@ -109,10 +110,10 @@ function replicate_pre( routine, args )
     _.assert( it.iterable !== null && it.iterable !== undefined );
     _.assert( it.dstSet === null );
 
-    dstMethods.call( it );
-
     if( c.onUp )
     c.onUp.call( it );
+
+    dstMethods.call( it );
 
     if( it.dstSetting )
     it.dstSet();
@@ -146,7 +147,7 @@ function replicate_pre( routine, args )
     let it = this;
     let c = it.context;
 
-    _.assert( it.dst === null );
+    // _.assert( it.dst === null );
     _.assert( it.iterable !== null && it.iterable !== undefined );
 
     it.dstSet = dstSet;
@@ -163,7 +164,7 @@ function replicate_pre( routine, args )
     {
       it.dstWriteDown = function( eit )
       {
-        _.assert( eit.dst !== undefined );
+        if( eit.dst !== undefined )
         this.dst.push( eit.dst );
       }
     }
@@ -171,7 +172,9 @@ function replicate_pre( routine, args )
     {
       it.dstWriteDown = function( eit )
       {
-        _.assert( eit.dst !== undefined );
+        if( eit.dst === undefined )
+        delete this.dst[ eit.key ];
+        else
         this.dst[ eit.key ] = eit.dst;
       }
     }
@@ -227,6 +230,7 @@ replicateIt_body.defaults =
   trackingVisits : 1,
   iterationCurrent : null,
   iteratorExtension : null,
+  recursive : Infinity,
 
   onUp : null,
   onDown : null,
