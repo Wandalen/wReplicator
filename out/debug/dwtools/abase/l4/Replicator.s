@@ -54,7 +54,7 @@ function replicate_pre( routine, args )
   _.assert( o.onUp === null || _.routineIs( o.onUp ) );
   _.assert( o.onDown === null || _.routineIs( o.onDown ) );
 
-  o.prevContext = null;
+  o.prevReplicateOptions = null;
   if( o.root === null )
   o.root = o.src;
 
@@ -63,18 +63,18 @@ function replicate_pre( routine, args )
     debugger;
     _.assert( o.src === null );
     _.assert( _.lookIterationIs( o.it ) );
-    _.assert( _.objectIs( o.it.context ) );
+    _.assert( _.objectIs( o.it.replicateOptions ) );
     o.src = o.it.src;
-    o.prevContext = o.it.context;
+    o.prevReplicateOptions = o.it.replicateOptions;
   }
 
   let o2 = optionsFor( o );
   let it = _.look.pre( _.look, [ o2 ] );
 
   _.assert( o.it === it || o.it === null );
-  _.assert( it.context === o.prevContext || it.context === o );
-  it.iterator.context = o;
-  _.assert( it.context === o );
+  _.assert( it.replicateOptions === o.prevReplicateOptions || it.replicateOptions === o );
+  it.iterator.replicateOptions = o;
+  _.assert( it.replicateOptions === o );
 
   return it;
 
@@ -85,17 +85,22 @@ function replicate_pre( routine, args )
 
     let o2 = Object.create( null );
     o2.src = o.src;
-    o2.context = o;
+    // o2.context = o;
     o2.onUp = up;
     o2.onDown = down;
     o2.Looker = Looker;
     o2.trackingVisits = o.trackingVisits;
     o2.it = o.it;
-    o2.iterationCurrent = o.iterationCurrent;
-    o2.iteratorExtension = o.iteratorExtension;
     o2.recursive = o.recursive;
 
+    o2.iteratorExtension = o.iteratorExtension;
+    o2.iterationExtension = o.iterationExtension;
+    o2.iterationPreserve = o.iterationPreserve;
+
+    o2.iteratorExtension = _.mapExtend( null, o2.iteratorExtension || {} );
+    _.assert( o2.iteratorExtension.replicateOptions === undefined );
     _.assert( arguments.length === 1 );
+    o2.iteratorExtension.replicateOptions = o;
 
     return o2;
   }
@@ -105,7 +110,7 @@ function replicate_pre( routine, args )
   function up()
   {
     let it = this;
-    let c = it.context;
+    let c = it.replicateOptions;
 
     _.assert( it.iterable !== null && it.iterable !== undefined );
     _.assert( it.dstSet === null );
@@ -125,7 +130,7 @@ function replicate_pre( routine, args )
   function down()
   {
     let it = this;
-    let c = it.context;
+    let c = it.replicateOptions;
 
     if( c.onDown )
     c.onDown.call( it );
@@ -145,7 +150,7 @@ function replicate_pre( routine, args )
   function dstMethods()
   {
     let it = this;
-    let c = it.context;
+    let c = it.replicateOptions;
 
     // _.assert( it.dst === null );
     _.assert( it.iterable !== null && it.iterable !== undefined );
@@ -186,7 +191,7 @@ function replicate_pre( routine, args )
   function dstSet()
   {
     let it = this;
-    let c = it.context;
+    let c = it.replicateOptions;
 
     _.assert( it.dst === null );
     _.assert( it.iterable !== null && it.iterable !== undefined );
@@ -215,7 +220,7 @@ function replicateIt_body( it )
   _.assert( arguments.length === 1, 'Expects single argument' );
   _.assert( _.lookerIs( it.Looker ) );
   _.assert( it.looker === undefined );
-  it.context.iteration = _.look.body( it );
+  it.replicateOptions.iteration = _.look.body( it );
   return it;
 }
 
@@ -228,8 +233,9 @@ replicateIt_body.defaults =
   dst :  null,
 
   trackingVisits : 1,
-  iterationCurrent : null,
   iteratorExtension : null,
+  iterationExtension : null,
+  iterationPreserve : null,
   recursive : Infinity,
 
   onUp : null,
