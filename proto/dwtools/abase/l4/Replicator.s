@@ -13,8 +13,7 @@
 
 /**
  * Collection of routines to replicate a complex data structure.
-  @namespace Replicator
-  @augments wTools
+  @namespace wTools(module:Replicator)
   @memberof module:Tools/base/Replicator
 */
 
@@ -255,19 +254,19 @@ replicateIt_body.defaults =
 /**
  * @summary Replicates a complex data structure using iterator.
  * @param {Object} o Options map
- * @param {Object} it Iterator object
- * @param {Object} root
- * @param {Object} src Source data structure
- * @param {Object} dst Target data structure
- * @param {Boolean} trackingVisits=1
- * @param {} iteratorExtension=null
- * @param {} iterationExtension=null
- * @param {Boolean} iterationPreserve=null
- * @param {Number} recursive=Infinity
+ * @param {Object} o.it Iterator object
+ * @param {Object} o.root
+ * @param {Object} o.src Source data structure
+ * @param {Object} o.dst Target data structure
+ * @param {Boolean} o.trackingVisits=1
+ * @param {} o.iteratorExtension=null
+ * @param {} o.iterationExtension=null
+ * @param {Boolean} o.iterationPreserve=null
+ * @param {Number} o.recursive=Infinity
  *
  * @returns {Object} Returns `dst` structure.
  * @function replicateIt
- * @memberof module:Tools/base/Replicator.Replicator
+ * @memberof module:Tools/base/Replicator.wTools(module:Replicator)
  */
 
 
@@ -298,7 +297,7 @@ _.routineExtend( replicate_body, replicateIt );
  *
  * @returns {} Returns `dst` structure.
  * @function replicate
- * @memberof module:Tools/base/Replicator.Replicator
+ * @memberof module:Tools/base/Replicator.wTools(module:Replicator)
  */
 
 let replicate = _.routineFromPreAndBody( replicate_pre, replicate_body );
