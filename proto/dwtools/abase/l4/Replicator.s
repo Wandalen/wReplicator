@@ -13,7 +13,7 @@
 
 /**
  * Collection of routines to replicate a complex data structure.
-  @namespace wTools(module:Replicator)
+  @namespace Tools( module::Replicator )
   @memberof module:Tools/base/Replicator
 */
 
@@ -266,7 +266,7 @@ replicateIt_body.defaults =
  *
  * @returns {Object} Returns `dst` structure.
  * @function replicateIt
- * @memberof module:Tools/base/Replicator.wTools(module:Replicator)
+ * @memberof module:Tools/base/Replicator.Tools( module::Replicator )
  */
 
 
@@ -297,7 +297,7 @@ _.routineExtend( replicate_body, replicateIt );
  *
  * @returns {} Returns `dst` structure.
  * @function replicate
- * @memberof module:Tools/base/Replicator.wTools(module:Replicator)
+ * @memberof module:Tools/base/Replicator.Tools( module::Replicator )
  */
 
 let replicate = _.routineFromPreAndBody( replicate_pre, replicate_body );
