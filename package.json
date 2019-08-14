@@ -22,7 +22,8 @@
     "url": "https://github.com/Wandalen/wReplicator/issues"
   },
   "dependencies": {
-    "wTools": ""
+    "wTools": "",
+    "wlooker": ""
   },
   "devDependencies": {
     "wTesting": ""
