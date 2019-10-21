@@ -23,7 +23,7 @@ about :
 path :
 
   repository : git+https:///github.com/Wandalen/wReplicator.git
-  remotes :
+  origins :
    - git+https:///github.com/Wandalen/wReplicator.git
    - npm:///wreplicator
   bugtracker : https:///github.com/Wandalen/wReplicator/issues
