@@ -6,12 +6,13 @@ consistency:
     hash: 1578d5db524f37ef01197f4ff8c4466f
     size: 1789
   ../.im.will.yml: &ref_1
-    hash: 86c114b4327e153155fb72bccb0d18f6
-    size: 4934
+    hash: 48b27c971944396bdb2f5af2cddbb8c1
+    size: 5008
 module:
   wReplicator.out:
     about:
       name: wReplicator
+      org: noorg
       description: >-
         Collection of routines to replicate a complex data structure. It
         traverses input data structure deeply producing a copy of it.
@@ -59,9 +60,6 @@ module:
       download:
         criterion:
           predefined: 1
-      remote:
-        criterion:
-          predefined: 1
       repository:
         path: 'git+https:///github.com/Wandalen/wReplicator.git'
       origins:
@@ -71,15 +69,15 @@ module:
       bugtracker:
         path: 'https:///github.com/Wandalen/wReplicator/issues'
       in:
-        criterion:
-          predefined: 0
         path: .
       out:
-        criterion:
-          predefined: 0
         path: .
       temp:
-        path: 'path::out'
+        path:
+          - 'path::out'
+          - ../package-lock.json
+          - ../package.json
+          - ../node_modules
       proto:
         path: ../proto
       export:
@@ -144,11 +142,13 @@ module:
         path: '{path::out.*=}/source/Index.s'
       exported.dir.proto.export:
         criterion:
+          generated: 1
           content: proto
           export: 1
         path: ../proto
       exported.files.proto.export:
         criterion:
+          generated: 1
           content: proto
           export: 1
         path:
@@ -331,6 +331,7 @@ module:
           prefixPath: ../proto
         mandatory: 1
         criterion:
+          generated: 1
           content: proto
           export: 1
       exported.files.proto.export:
@@ -343,6 +344,7 @@ module:
         recursive: 0
         mandatory: 1
         criterion:
+          generated: 1
           content: proto
           export: 1
     step:
@@ -789,6 +791,7 @@ module:
   ../:
     about:
       name: wReplicator
+      org: noorg
       description: >-
         Collection of routines to replicate a complex data structure. It
         traverses input data structure deeply producing a copy of it.
@@ -829,9 +832,6 @@ module:
       download:
         criterion:
           predefined: 1
-      remote:
-        criterion:
-          predefined: 1
       repository:
         path: 'git+https:///github.com/Wandalen/wReplicator.git'
       origins:
@@ -841,21 +841,21 @@ module:
       bugtracker:
         path: 'https:///github.com/Wandalen/wReplicator/issues'
       in:
-        criterion:
-          predefined: 0
         path: .
       out:
-        criterion:
-          predefined: 0
         path: out
       temp:
-        path: 'path::out'
+        path:
+          - 'path::out'
+          - package-lock.json
+          - package.json
+          - node_modules
       proto:
-        path: ./proto
+        path: proto
       export:
         path: '{path::proto}/**'
       doc:
-        path: ./doc
+        path: doc
       out.raw.debug:
         criterion:
           debug: debug
@@ -1477,5 +1477,5 @@ module:
         hash: 1578d5db524f37ef01197f4ff8c4466f
         size: 1789
       ../.im.will.yml:
-        hash: 86c114b4327e153155fb72bccb0d18f6
-        size: 4934
+        hash: 48b27c971944396bdb2f5af2cddbb8c1
+        size: 5008
