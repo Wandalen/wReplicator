@@ -1508,6 +1508,4 @@ module:
       ../.im.will.yml:
         hash: 48b27c971944396bdb2f5af2cddbb8c1
         size: 5008
-      wReplicator.out.will.yml:
-        hash: 8be58e5c540b8e7d0d551d265659a2da
-        size: 38326
+      wReplicator.out.will.yml: *ref_0
