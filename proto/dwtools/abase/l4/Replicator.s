@@ -27,7 +27,6 @@ if( typeof module !== 'undefined' )
 }
 
 let _global = _global_;
-// let Self = _global_.wTools;
 let _ = _global_.wTools
 let Parent = _.Looker;
 
@@ -45,25 +44,21 @@ _.assert( !!_realGlobal_ );
 function dstMethodsAdd()
 {
   let it = this;
-  // let c = it.replicateOptions;
 
   _.assert( it.iterable !== null && it.iterable !== undefined );
   _.assert( it.dstWriteDown === null );
   _.assert( _.routineIs( it.dstSet ) );
-
-  // it.dstSet = dstSet;
 
   if( !it.iterable )
   {
     it.dstWriteDown = function dstWriteDown( eit )
     {
       _.assert( 0, 'Cant write into terminal' );
-      this.dst = eit.dst;
     }
   }
   else if( it.iterable === 'array-like' )
   {
-    it.dstWriteDown = function( eit )
+    it.dstWriteDown = function dstWriteDown( eit )
     {
       if( eit.dst !== undefined )
       this.dst.push( eit.dst );
@@ -71,7 +66,7 @@ function dstMethodsAdd()
   }
   else if( it.iterable === 'map-like' )
   {
-    it.dstWriteDown = function( eit )
+    it.dstWriteDown = function dstWriteDown( eit )
     {
       if( eit.dst === undefined )
       delete this.dst[ eit.key ];
@@ -87,7 +82,6 @@ function dstMethodsAdd()
 function dstSet()
 {
   let it = this;
-  // let c = it.replicateOptions; // xxx
 
   _.assert( it.dst === null );
   _.assert( it.iterable !== null && it.iterable !== undefined );
