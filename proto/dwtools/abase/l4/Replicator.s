@@ -56,7 +56,7 @@ function dstMethodsAdd()
       _.assert( 0, 'Cant write into terminal' );
     }
   }
-  else if( it.iterable === 'array-like' )
+  else if( it.iterable === 'long-like' )
   {
     it.dstWriteDown = function dstWriteDown( eit )
     {
@@ -91,7 +91,7 @@ function dstSet()
   {
     it.dst = it.src;
   }
-  else if( it.iterable === 'array-like' )
+  else if( it.iterable === 'long-like' )
   {
     it.dst = [];
   }
@@ -256,7 +256,6 @@ defaults.prevReplicateIteration = null;
  * @param {Object} o.root
  * @param {Object} o.src Source data structure
  * @param {Object} o.dst Target data structure
- * @param {Boolean} o.trackingVisits=1
  * @param {} o.iteratorExtension=null
  * @param {} o.iterationExtension=null
  * @param {Boolean} o.iterationPreserve=null
