@@ -41,9 +41,10 @@ _.assert( !!_realGlobal_ );
 // routines
 // --
 
-function dstMethodsAdd()
+function dstWriteDownEval()
 {
   let it = this;
+  it.dstWriteDown = null;
 
   _.assert( it.iterable !== null && it.iterable !== undefined );
   _.assert( it.dstWriteDown === null );
@@ -86,6 +87,7 @@ function dstSet()
   _.assert( it.dst === null );
   _.assert( it.iterable !== null && it.iterable !== undefined );
   _.assert( it.dstSetting );
+  _.assert( arguments.length === 0 );
 
   if( !it.iterable )
   {
@@ -104,49 +106,99 @@ function dstSet()
 
 //
 
-function visitUp()
+function srcChanged()
 {
   let it = this;
 
-  it.visitUpBegin();
+  _.assert( arguments.length === 0, 'Expects no arguments' );
 
-  _.assert( it.visiting );
-  _.assert( it.iterable !== null && it.iterable !== undefined );
-  _.assert( _.routineIs( it.dstSet ) );
+  let result = Parent.srcChanged.call( it );
 
-  _.assert( _.routineIs( it.onUp ) );
-  let r = it.onUp.call( it, it.src, it.key, it );
-  _.assert( r === undefined );
+  it.dstWriteDownEval();
 
-  /* */
+  return result;
+}
 
-  it.dstMethodsAdd();
+// //
+//
+// function visitUp()
+// {
+//   let it = this;
+//
+//   it.visitUpBegin();
+//
+//   _.assert( it.visiting );
+//   _.assert( it.iterable !== null && it.iterable !== undefined );
+//   _.assert( _.routineIs( it.dstSet ) );
+//
+//   _.assert( _.routineIs( it.onUp ) );
+//   let r = it.onUp.call( it, it.src, it.key, it );
+//   _.assert( r === undefined );
+//
+//   /* */
+//
+//   // it.dstWriteDownEval();
+//
+//   if( it.dstSetting )
+//   it.dstSet();
+//
+//   /* */
+//
+//   it.visitUpEnd()
+//
+// }
+
+// //
+//
+// function visitDown()
+// {
+//   let it = this;
+//
+//   it.visitDownBegin();
+//
+//   if( it.visiting )
+//   if( it.onDown )
+//   {
+//     let r = it.onDown.call( it, it.src, it.key, it );
+//     _.assert( r === undefined );
+//   }
+//
+//   /* */
+//
+//   _.assert( it.iterable !== null && it.iterable !== undefined );
+//
+//   if( it.down && it.dstWritingDown )
+//   {
+//     _.assert( _.routineIs( it.down.dstWriteDown ) );
+//     it.down.dstWriteDown( it );
+//   }
+//
+//   /* */
+//
+//   it.visitDownEnd();
+//
+//   return it;
+// }
+
+//
+
+function visitUpEnd()
+{
+  let it = this;
+
+  // it.dstWriteDownEval();
 
   if( it.dstSetting )
   it.dstSet();
 
-  /* */
-
-  it.visitUpEnd()
-
+  return Parent.visitDownEnd.call( it );
 }
 
 //
 
-function visitDown()
+function visitDownEnd()
 {
   let it = this;
-
-  it.visitDownBegin();
-
-  if( it.visiting )
-  if( it.onDown )
-  {
-    let r = it.onDown.call( it, it.src, it.key, it );
-    _.assert( r === undefined );
-  }
-
-  /* */
 
   _.assert( it.iterable !== null && it.iterable !== undefined );
 
@@ -156,11 +208,7 @@ function visitDown()
     it.down.dstWriteDown( it );
   }
 
-  /* */
-
-  it.visitDownEnd();
-
-  return it;
+  return Parent.visitDownEnd.call( it );
 }
 
 //
@@ -306,10 +354,13 @@ let replicate = _.routineFromPreAndBody( replicate_pre, replicate_body );
 let Replicator = Object.create( Parent );
 Replicator.constructor = function Replicator(){};
 Replicator.Looker = Replicator;
-Replicator.dstMethodsAdd = dstMethodsAdd;
+Replicator.dstWriteDownEval = dstWriteDownEval;
 Replicator.dstSet = dstSet;
-Replicator.visitUp = visitUp;
-Replicator.visitDown = visitDown;
+Replicator.srcChanged = srcChanged;
+// Replicator.visitUp = visitUp;
+// Replicator.visitDown = visitDown;
+Replicator.visitUpEnd = visitUpEnd;
+Replicator.visitDownEnd = visitDownEnd;
 
 let Iteration = Replicator.Iteration = _.mapExtend( null, Replicator.Iteration );
 Iteration.dst = null;
