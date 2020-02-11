@@ -6,7 +6,7 @@ Collection of routines to replicate a complex data structure. It traverses input
 ## Try out
 ```
 npm install
-node sample/Sample.s
+node sample/Sample.js
 ```
 
 
