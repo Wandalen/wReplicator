@@ -48,7 +48,6 @@ function dstWriteDownEval()
 
   _.assert( it.iterable !== null && it.iterable !== undefined );
   _.assert( it.dstWriteDown === null );
-  _.assert( _.routineIs( it.dstSet ) );
 
   if( !it.iterable )
   {
@@ -57,7 +56,7 @@ function dstWriteDownEval()
       _.assert( 0, 'Cant write into terminal' );
     }
   }
-  else if( it.iterable === 'long-like' )
+  else if( it.iterable === _.looker.containerNameToIdMap.long )
   {
     it.dstWriteDown = function dstWriteDown( eit )
     {
@@ -65,7 +64,7 @@ function dstWriteDownEval()
       this.dst.push( eit.dst );
     }
   }
-  else if( it.iterable === 'map-like' )
+  else if( it.iterable === _.looker.containerNameToIdMap.map )
   {
     it.dstWriteDown = function dstWriteDown( eit )
     {
@@ -75,32 +74,109 @@ function dstWriteDownEval()
       this.dst[ eit.key ] = eit.dst;
     }
   }
+  else if( it.iterable === _.looker.containerNameToIdMap.hashMap )
+  {
+    it.dstWriteDown = function dstWriteDown( eit )
+    {
+      _.assert( 0, 'not tested' ); /* qqq : test */
+      if( eit.dst === undefined )
+      this.dst.delete( eit.key );
+      else
+      this.dst.set( eit.key, eit.dst );
+    }
+  }
+  else if( it.iterable === _.looker.containerNameToIdMap.set )
+  {
+    it.dstWriteDown = function dstWriteDown( eit )
+    {
+      _.assert( 0, 'not tested' ); /* qqq : test */
+      if( eit.dst === undefined )
+      this.dst.delete( eit.dst );
+      else
+      this.dst.set( eit.dst );
+    }
+  }
+
+  // if( !it.iterable )
+  // {
+  //   it.dstWriteDown = function dstWriteDown( eit )
+  //   {
+  //     _.assert( 0, 'Cant write into terminal' );
+  //   }
+  // }
+  // else if( it.iterable === 'long-like' )
+  // {
+  //   it.dstWriteDown = function dstWriteDown( eit )
+  //   {
+  //     if( eit.dst !== undefined )
+  //     this.dst.push( eit.dst );
+  //   }
+  // }
+  // else if( it.iterable === 'map-like' )
+  // {
+  //   it.dstWriteDown = function dstWriteDown( eit )
+  //   {
+  //     if( eit.dst === undefined )
+  //     delete this.dst[ eit.key ];
+  //     else
+  //     this.dst[ eit.key ] = eit.dst;
+  //   }
+  // }
 
 }
 
 //
 
-function dstSet()
+function dstMake()
 {
   let it = this;
 
   _.assert( it.dst === null );
   _.assert( it.iterable !== null && it.iterable !== undefined );
-  _.assert( it.dstSetting );
+  _.assert( it.dstMaking );
   _.assert( arguments.length === 0 );
 
   if( !it.iterable )
   {
     it.dst = it.src;
   }
-  else if( it.iterable === 'long-like' )
+  else if( it.iterable === _.looker.containerNameToIdMap.long )
   {
     it.dst = [];
   }
-  else if( it.iterable === 'map-like' )
+  else if( it.iterable === _.looker.containerNameToIdMap.map )
   {
     it.dst = Object.create( null );
   }
+  else if( it.iterable === _.looker.containerNameToIdMap.hashMap )
+  {
+    it.dst = new HashMap;
+  }
+  else if( it.iterable === _.looker.containerNameToIdMap.set )
+  {
+    it.dst = new Set;
+  }
+
+  // if( !it.iterable )
+  // {
+  //   it.dst = it.src;
+  // }
+  // else if( it.iterable === 'long-like' )
+  // {
+  //   it.dst = [];
+  // }
+  // else if( it.iterable === 'map-like' )
+  // {
+  //   it.dst = Object.create( null );
+  // }
+  // else if( it.iterable === 'hash-map-like' )
+  // {
+  //   it.dst = new HashMap;
+  // }
+  // else if( it.iterable === 'set-like' )
+  // {
+  //   it.dst = new Set;
+  // }
 
 }
 
@@ -119,77 +195,14 @@ function srcChanged()
   return result;
 }
 
-// //
-//
-// function visitUp()
-// {
-//   let it = this;
-//
-//   it.visitUpBegin();
-//
-//   _.assert( it.visiting );
-//   _.assert( it.iterable !== null && it.iterable !== undefined );
-//   _.assert( _.routineIs( it.dstSet ) );
-//
-//   _.assert( _.routineIs( it.onUp ) );
-//   let r = it.onUp.call( it, it.src, it.key, it );
-//   _.assert( r === undefined );
-//
-//   /* */
-//
-//   // it.dstWriteDownEval();
-//
-//   if( it.dstSetting )
-//   it.dstSet();
-//
-//   /* */
-//
-//   it.visitUpEnd()
-//
-// }
-
-// //
-//
-// function visitDown()
-// {
-//   let it = this;
-//
-//   it.visitDownBegin();
-//
-//   if( it.visiting )
-//   if( it.onDown )
-//   {
-//     let r = it.onDown.call( it, it.src, it.key, it );
-//     _.assert( r === undefined );
-//   }
-//
-//   /* */
-//
-//   _.assert( it.iterable !== null && it.iterable !== undefined );
-//
-//   if( it.down && it.dstWritingDown )
-//   {
-//     _.assert( _.routineIs( it.down.dstWriteDown ) );
-//     it.down.dstWriteDown( it );
-//   }
-//
-//   /* */
-//
-//   it.visitDownEnd();
-//
-//   return it;
-// }
-
 //
 
 function visitUpEnd()
 {
   let it = this;
 
-  // it.dstWriteDownEval();
-
-  if( it.dstSetting )
-  it.dstSet();
+  if( it.dstMaking )
+  it.dstMake();
 
   return Parent.visitDownEnd.call( it );
 }
@@ -219,7 +232,6 @@ function replicate_pre( routine, args )
   let o = args[ 0 ];
   if( args.length === 2 )
   {
-    // if( _.lookIterationIs( args[ 0 ] ) )
     if( Self.iterationIs( args[ 0 ] ) )
     o = { it : args[ 0 ], dst : args[ 1 ] }
     else
@@ -355,16 +367,14 @@ let Replicator = Object.create( Parent );
 Replicator.constructor = function Replicator(){};
 Replicator.Looker = Replicator;
 Replicator.dstWriteDownEval = dstWriteDownEval;
-Replicator.dstSet = dstSet;
+Replicator.dstMake = dstMake;
 Replicator.srcChanged = srcChanged;
-// Replicator.visitUp = visitUp;
-// Replicator.visitDown = visitDown;
 Replicator.visitUpEnd = visitUpEnd;
 Replicator.visitDownEnd = visitDownEnd;
 
 let Iteration = Replicator.Iteration = _.mapExtend( null, Replicator.Iteration );
 Iteration.dst = null;
-Iteration.dstSetting = true;
+Iteration.dstMaking = true;
 Iteration.dstWriteDown = null;
 Iteration.dstWritingDown = true;
 
