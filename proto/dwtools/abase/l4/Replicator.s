@@ -13,7 +13,7 @@
 
 /**
  * Collection of routines to replicate a complex data structure.
-  @namespace Tools( module::Replicator )
+  @namespace Tools.Replicator 
   @memberof module:Tools/base/Replicator
 */
 
