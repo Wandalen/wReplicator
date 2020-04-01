@@ -5,6 +5,7 @@
 /**
  * Collection of routines to replicate a complex data structure. It traverse input data structure deeply producing a copy of it.Collection of routines to replicate a complex data structure. It traverses input data structure deeply producing a copy of it.
   @module Tools/base/Replicator
+  @extends Tools
 */
 
 /**
@@ -13,8 +14,6 @@
 
 /**
  * Collection of routines to replicate a complex data structure.
-  @namespace Tools.Replicator 
-  @memberof module:Tools/base/Replicator
 */
 
 if( typeof module !== 'undefined' )
@@ -323,7 +322,7 @@ defaults.prevReplicateIteration = null;
  *
  * @returns {Object} Returns `dst` structure.
  * @function replicateIt
- * @memberof module:Tools/base/Replicator.Tools( module::Replicator )
+ * @memberofs "module:Tools/base/Replicator","module:Tools/base/Fundamental.wTools"
  */
 
 
@@ -354,7 +353,7 @@ _.routineExtend( replicate_body, replicateIt.body );
  *
  * @returns {} Returns `dst` structure.
  * @function replicate
- * @memberof module:Tools/base/Replicator.Tools( module::Replicator )
+ * @memberofs "module:Tools/base/Replicator","module:Tools/base/Fundamental.wTools"
  */
 
 let replicate = _.routineFromPreAndBody( replicate_pre, replicate_body );
