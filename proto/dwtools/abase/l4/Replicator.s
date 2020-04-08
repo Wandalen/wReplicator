@@ -322,7 +322,8 @@ defaults.prevReplicateIteration = null;
  *
  * @returns {Object} Returns `dst` structure.
  * @function replicateIt
- * @memberofs "module:Tools/base/Replicator","module:Tools/base/Fundamental.wTools"
+ * @namespace Tools
+ * @module Tools/base/Replicator
  */
 
 
@@ -353,7 +354,8 @@ _.routineExtend( replicate_body, replicateIt.body );
  *
  * @returns {} Returns `dst` structure.
  * @function replicate
- * @memberofs "module:Tools/base/Replicator","module:Tools/base/Fundamental.wTools"
+ * @namespace Tools
+ * @module Tools/base/Replicator
  */
 
 let replicate = _.routineFromPreAndBody( replicate_pre, replicate_body );
