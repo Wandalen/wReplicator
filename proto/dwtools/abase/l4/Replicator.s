@@ -315,8 +315,8 @@ defaults.prevReplicateIteration = null;
  * @param {Object} o.root
  * @param {Object} o.src Source data structure
  * @param {Object} o.dst Target data structure
- * @param {} o.iteratorExtension=null
- * @param {} o.iterationExtension=null
+ * @param {*} o.iteratorExtension=null
+ * @param {*} o.iterationExtension=null
  * @param {Boolean} o.iterationPreserve=null
  * @param {Number} o.recursive=Infinity
  *
@@ -349,8 +349,8 @@ _.routineExtend( replicate_body, replicateIt.body );
 
 /**
  * @summary Replicates a complex data structure.
- * @param {} src Source data scructure
- * @param {} dst Target data scructure
+ * @param {*} src Source data scructure
+ * @param {*} dst Target data scructure
  *
  * @returns {} Returns `dst` structure.
  * @function replicate
