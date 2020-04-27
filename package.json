@@ -1,6 +1,6 @@
 {
   "name" : "wreplicator",
-  "version" : "0.3.83",
+  "version" : "0.3.84",
   "description" : "Collection of routines to replicate a complex data structure. It traverses input data structure deeply producing a copy of it.",
   "author" : "Kostiantyn Wandalen <wanalen@willbe.so>",
   "license" : "MIT",
@@ -16,7 +16,7 @@
   {
     "url" : "https://github.com/Wandalen/wReplicator/issues"
   },
-  "dependencies" : { "wTools" : "gamma", "wlooker" : "gamma" },
-  "devDependencies" : { "wTesting" : "gamma" },
+  "dependencies" : { "wTools" : "beta", "wlooker" : "beta" },
+  "devDependencies" : { "wTesting" : "beta" },
   "keywords" : [ "wTools" ]
 }
