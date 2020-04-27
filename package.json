@@ -1,22 +1,22 @@
 {
-  "name" : "wreplicator", 
-  "version" : "0.3.82", 
-  "description" : "Collection of routines to replicate a complex data structure. It traverses input data structure deeply producing a copy of it.", 
-  "author" : "Kostiantyn Wandalen <wanalen@willbe.so>", 
-  "license" : "MIT", 
-  "main" : "proto/dwtools/abase/l4/Replicator.s", 
-  "files" : [ "proto/dwtools/abase/l4", "proto/dwtools/Tools.s", "out" ], 
-  "scripts" : { "test" : "wtest .run proto/**", "docgen" : "wdocgen proto" }, 
-  "repository" : 
+  "name" : "wreplicator",
+  "version" : "0.3.83",
+  "description" : "Collection of routines to replicate a complex data structure. It traverses input data structure deeply producing a copy of it.",
+  "author" : "Kostiantyn Wandalen <wanalen@willbe.so>",
+  "license" : "MIT",
+  "main" : "proto/dwtools/abase/l4/Replicator.s",
+  "files" : [ "proto/dwtools/abase/l4", "proto/dwtools/Tools.s", "out" ],
+  "scripts" : { "test" : "wtest .run proto/**", "docgen" : "wdocgen proto" },
+  "repository" :
   {
-    "type" : "git", 
+    "type" : "git",
     "url" : "https://github.com/Wandalen/wReplicator.git"
-  }, 
-  "bugs" : 
+  },
+  "bugs" :
   {
     "url" : "https://github.com/Wandalen/wReplicator/issues"
-  }, 
-  "dependencies" : { "wTools" : "alpha", "wlooker" : "alpha" }, 
-  "devDependencies" : { "wTesting" : "alpha" }, 
+  },
+  "dependencies" : { "wTools" : "gamma", "wlooker" : "gamma" },
+  "devDependencies" : { "wTesting" : "gamma" },
   "keywords" : [ "wTools" ]
 }
