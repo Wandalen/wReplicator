@@ -14,7 +14,7 @@
 
 /**
  * Collection of routines to replicate a complex data structure.
-*/
+ */
 
 if( typeof module !== 'undefined' )
 {
@@ -96,32 +96,6 @@ function dstWriteDownEval()
     }
   }
 
-  // if( !it.iterable )
-  // {
-  //   it.dstWriteDown = function dstWriteDown( eit )
-  //   {
-  //     _.assert( 0, 'Cant write into terminal' );
-  //   }
-  // }
-  // else if( it.iterable === 'long-like' )
-  // {
-  //   it.dstWriteDown = function dstWriteDown( eit )
-  //   {
-  //     if( eit.dst !== undefined )
-  //     this.dst.push( eit.dst );
-  //   }
-  // }
-  // else if( it.iterable === 'map-like' )
-  // {
-  //   it.dstWriteDown = function dstWriteDown( eit )
-  //   {
-  //     if( eit.dst === undefined )
-  //     delete this.dst[ eit.key ];
-  //     else
-  //     this.dst[ eit.key ] = eit.dst;
-  //   }
-  // }
-
 }
 
 //
@@ -155,27 +129,6 @@ function dstMake()
   {
     it.dst = new Set;
   }
-
-  // if( !it.iterable )
-  // {
-  //   it.dst = it.src;
-  // }
-  // else if( it.iterable === 'long-like' )
-  // {
-  //   it.dst = [];
-  // }
-  // else if( it.iterable === 'map-like' )
-  // {
-  //   it.dst = Object.create( null );
-  // }
-  // else if( it.iterable === 'hash-map-like' )
-  // {
-  //   it.dst = new HashMap;
-  // }
-  // else if( it.iterable === 'set-like' )
-  // {
-  //   it.dst = new Set;
-  // }
 
 }
 
@@ -284,6 +237,114 @@ function replicate_pre( routine, args )
   }
 
 }
+
+//
+
+/* xxx qqq : implement please replication with buffer sepration
+*/
+
+// function cloneDataSeparatingBuffers( o )
+// {
+//   var result = Object.create( null );
+//   var buffers = [];
+//   var descriptorsArray = [];
+//   var descriptorsMap = Object.create( null );
+//   var size = 0;
+//   var offset = 0;
+//
+//   _.routineOptions( cloneDataSeparatingBuffers, o );
+//   _.assert( arguments.length === 1, 'Expects single argument' );
+//
+//   /* onBuffer */
+//
+//   o.onBuffer = function onBuffer( srcBuffer, it )
+//   {
+//
+//     _.assert( arguments.length === 2, 'Expects exactly two arguments' );
+//     _.assert( _.bufferTypedIs( srcBuffer ), 'not tested' );
+//
+//     var index = buffers.length;
+//     var id = _.strJoin([ '--buffer-->', index, '<--buffer--' ]);
+//     var bufferSize = srcBuffer ? srcBuffer.length*srcBuffer.BYTES_PER_ELEMENT : 0;
+//     size += bufferSize;
+//
+//     let bufferConstructorName;
+//     if( srcBuffer ) /* yyy */
+//     {
+//       let longDescriptor = _.LongTypeToDescriptorsHash.get( srcBuffer.constructor );
+//
+//       if( longDescriptor )
+//       bufferConstructorName = longDescriptor.name;
+//       else
+//       bufferConstructorName = srcBuffer.constructor.name;
+//
+//     }
+//     else
+//     {
+//       bufferConstructorName = 'null';
+//     }
+//
+//     var descriptor =
+//     {
+//       'bufferConstructorName' : bufferConstructorName,
+//       'sizeOfScalar' : srcBuffer ? srcBuffer.BYTES_PER_ELEMENT : 0,
+//       'offset' : -1,
+//       'size' : bufferSize,
+//       'index' : index,
+//     }
+//
+//     buffers.push( srcBuffer );
+//     descriptorsArray.push( descriptor );
+//     descriptorsMap[ id ] = descriptor;
+//
+//     it.dst = id;
+//
+//   }
+//
+//   /* clone data */
+//
+//   result.data = _._clone( o );
+//   result.descriptorsMap = descriptorsMap;
+//
+//   /* sort by atom size */
+//
+//   descriptorsArray.sort( function( a, b )
+//   {
+//     return b[ 'sizeOfScalar' ] - a[ 'sizeOfScalar' ];
+//   });
+//
+//   /* alloc */
+//
+//   result.buffer = new BufferRaw( size );
+//   var dstBuffer = _.bufferBytesGet( result.buffer );
+//
+//   /* copy buffers */
+//
+//   for( var b = 0 ; b < descriptorsArray.length ; b++ )
+//   {
+//
+//     var descriptor = descriptorsArray[ b ];
+//     var buffer = buffers[ descriptor.index ];
+//     var bytes = buffer ? _.bufferBytesGet( buffer ) : new U8x();
+//     var bufferSize = descriptor[ 'size' ];
+//
+//     descriptor[ 'offset' ] = offset;
+//
+//     _.bufferMove( dstBuffer.subarray( offset, offset+bufferSize ), bytes );
+//
+//     offset += bufferSize;
+//
+//   }
+//
+//   return result;
+// }
+//
+// cloneDataSeparatingBuffers.defaults =
+// {
+//   copyingBuffers : 1,
+// }
+//
+// cloneDataSeparatingBuffers.defaults.__proto__ = cloneData.defaults;
 
 //
 
@@ -400,7 +461,7 @@ _.mapSupplement( _, Supplement );
 // export
 // --
 
-if( typeof module !== 'undefined' && module !== null )
+if( typeof module !== 'undefined' )
 module[ 'exports' ] = _;
 
 })();
