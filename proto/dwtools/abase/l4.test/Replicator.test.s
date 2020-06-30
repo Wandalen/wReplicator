@@ -5,7 +5,7 @@
 if( typeof module !== 'undefined' )
 {
 
-  let _ = require( '../../Tools.s' );
+  let _ = require( '../../../dwtools/Tools.s' );
 
   require( '../l4/Replicator.s' );
 
@@ -31,8 +31,8 @@ function trivial( test )
     c : [ 1, 3 ],
     d : [ 1, { date : new Date() } ],
     e : function(){},
-    f : new ArrayBuffer( 13 ),
-    g : new Float32Array([ 1,2,3 ]),
+    f : new BufferRaw( 13 ),
+    g : new F32x([ 1,2,3 ]),
     h : false,
     i : true,
     j : { a : 1, b : 2 },
@@ -62,53 +62,9 @@ function trivial( test )
     handleDownIndices.push( it.index );
   }
 
-  // let expectedUpBeginPaths = [ '/', '/a', '/b', '/c', '/c/0', '/c/1', '/d', '/d/0', '/d/1', '/d/1/date', '/e', '/f', '/g', '/h', '/i', '/j', '/j/a', '/j/b' ];
-  // let expectedUpBeginIndices = [ null, 0, 1, 2, 0, 1, 3, 0, 1, 0, 4, 5, 6, 7, 8, 9, 0, 1 ];
-  // let expectedUpEndPaths = [ '/', '/a', '/b', '/c', '/c/0', '/c/1', '/d', '/d/0', '/d/1', '/d/1/date', '/e', '/f', '/g', '/h', '/i', '/j', '/j/a', '/j/b' ];
-  // let expectedUpEndIndices = [ null, 0, 1, 2, 0, 1, 3, 0, 1, 0, 4, 5, 6, 7, 8, 9, 0, 1 ];
-  // let expectedDownBeginPaths = [ '/a', '/b', '/c/0', '/c/1', '/c', '/d/0', '/d/1/date', '/d/1', '/d', '/e', '/f', '/g', '/h', '/i', '/j/a', '/j/b', '/j', '/' ];
-  // let expectedDownBeginIndices = [ 0, 1, 0, 1, 2, 0, 0, 1, 3, 4, 5, 6, 7, 8, 0, 1, 9, null ];
-  // let expectedDownEndPaths = [ '/a', '/b', '/c/0', '/c/1', '/c', '/d/0', '/d/1/date', '/d/1', '/d', '/e', '/f', '/g', '/h', '/i', '/j/a', '/j/b', '/j', '/' ];
-  // let expectedDownEndIndices = [ 0, 1, 0, 1, 2, 0, 0, 1, 3, 4, 5, 6, 7, 8, 0, 1, 9, null ];
-  //
-  // let handleUpBeginPaths = [];
-  // let handleUpBeginIndices = [];
-  // let handleUpEndPaths = [];
-  // let handleUpEndIndices = [];
-  // let handleDownBeginPaths = [];
-  // let handleDownBeginIndices = [];
-  // let handleDownEndPaths = [];
-  // let handleDownEndIndices = [];
-  //
-  // function handleUpBegin()
-  // {
-  //   let it = this;
-  //   handleUpBeginPaths.push( it.path );
-  //   handleUpBeginIndices.push( it.index );
-  // }
-  //
-  // function handleUpEnd()
-  // {
-  //   let it = this;
-  //   handleUpEndPaths.push( it.path );
-  //   handleUpEndIndices.push( it.index );
-  // }
-  //
-  // function handleDownBegin()
-  // {
-  //   let it = this;
-  //   handleDownBeginPaths.push( it.path );
-  //   handleDownBeginIndices.push( it.index );
-  // }
-  //
-  // function handleDownEnd()
-  // {
-  //   let it = this;
-  //   handleDownEndPaths.push( it.path );
-  //   handleDownEndIndices.push( it.index );
-  // }
+  /* */
 
-  test.case = 'trivial'; /* */
+  test.case = 'trivial';
 
   var got = _.replicate({ src : structure1 });
   test.identical( got, structure1 );
@@ -124,7 +80,9 @@ function trivial( test )
   test.is( got.i === structure1.i );
   test.is( got.j !== structure1.j );
 
-  test.case = 'additional handlers'; /* */
+  /* */
+
+  test.case = 'additional handlers';
 
   var got = _.replicate
   ({
@@ -154,45 +112,229 @@ function trivial( test )
   test.case = 'expectedDownIndices';
   test.identical( handleDownIndices, expectedDownIndices );
 
-  // test.case = 'additional handlers'; /* */
-  //
-  // var got = _.replicate
-  // ({
-  //   src : structure1,
-  //   onUpBegin : handleUpBegin,
-  //   onUpEnd : handleUpEnd,
-  //   onDownBegin : handleDownBegin,
-  //   onDownEnd : handleDownEnd,
-  // });
-  // test.identical( got, structure1 );
-  // test.is( got !== structure1 );
-  // test.is( got.a === structure1.a );
-  // test.is( got.b === structure1.b );
-  // test.is( got.c !== structure1.c );
-  // test.is( got.d !== structure1.d );
-  // test.is( got.e === structure1.e );
-  // test.is( got.f === structure1.f );
-  // test.is( got.g === structure1.g );
-  // test.is( got.h === structure1.h );
-  // test.is( got.i === structure1.i );
-  // test.is( got.j !== structure1.j );
-  //
-  // test.case = 'expectedUpBeginPaths';
-  // test.identical( handleUpBeginPaths, expectedUpBeginPaths );
-  // test.case = 'expectedUpBeginIndices';
-  // test.identical( handleUpBeginIndices, expectedUpBeginIndices );
-  // test.case = 'expectedUpEndPaths';
-  // test.identical( handleUpEndPaths, expectedUpEndPaths );
-  // test.case = 'expectedUpEndIndices';
-  // test.identical( handleUpEndIndices, expectedUpEndIndices );
-  // test.case = 'expectedDownBeginPaths';
-  // test.identical( handleDownBeginPaths, expectedDownBeginPaths );
-  // test.case = 'expectedDownBeginIndices';
-  // test.identical( handleDownBeginIndices, expectedDownBeginIndices );
-  // test.case = 'expectedDownEndPaths';
-  // test.identical( handleDownEndPaths, expectedDownEndPaths );
-  // test.case = 'expectedDownEndIndices';
-  // test.identical( handleDownEndIndices, expectedDownEndIndices );
+}
+
+//
+
+function replaceOfSrc( test )
+{
+
+  var structure1 =
+  {
+    a : 1,
+    b : '!replace!',
+    c : [ 1, 2 ],
+    d : [ 1, { date : new Date() } ],
+    e : function(){},
+    f : new BufferRaw( 13 ),
+    g : new F32x([ 1,2,3 ]),
+    h : false,
+    i : true,
+    j : { a : 1, b : 2 },
+  }
+
+  let expectedUpPaths = [ '/', '/a', '/b', '/b/0', '/b/1', '/b/2', '/b/3', '/c', '/d', '/e', '/f', '/g', '/h', '/i', '/j' ];
+  let expectedUpIndices = [ null, 0, 1, 0, 1, 2, 3, 2, 3, 4, 5, 6, 7, 8, 9 ];
+  let expectedDownPaths = [ '/a', '/b/0', '/b/1', '/b/2', '/b/3', '/b', '/c', '/d', '/e', '/f', '/g', '/h', '/i', '/j', '/' ];
+  let expectedDownIndices = [ 0, 0, 1, 2, 3, 1, 2, 3, 4, 5, 6, 7, 8, 9, null ];
+
+  let handleUpPaths = [];
+  let handleUpIndices = [];
+  let handleDownPaths = [];
+  let handleDownIndices = [];
+
+  let replacedForString = [ 'string', 'replaced', 'by', 'this' ];
+
+  function handleUp()
+  {
+    let it = this;
+
+    if( it.src === '!replace!' )
+    {
+      it.src = replacedForString;
+      it.iterable = null;
+      it.srcChanged();
+    }
+    else if( _.numberIs( it.src ) )
+    {
+      it.src = 'number replaced by this';
+      it.iterable = null;
+      it.srcChanged();
+    }
+    else if( _.arrayIs( it.src ) )
+    {
+      it.src = 'array replaced by this';
+      it.iterable = null;
+      it.srcChanged();
+    }
+    else if( _.objectIs( it.src ) && _.mapKeys( it.src ).length === 2 )
+    {
+      it.src = 'map replaced by this';
+      it.iterable = null;
+      it.srcChanged();
+    }
+
+    handleUpPaths.push( it.path );
+    handleUpIndices.push( it.index );
+  }
+
+  function handleDown()
+  {
+    let it = this;
+    handleDownPaths.push( it.path );
+    handleDownIndices.push( it.index );
+  }
+
+  /* */
+
+  test.case = '';
+
+  var expected =
+  {
+    a : 'number replaced by this',
+    b : [ 'string', 'replaced', 'by', 'this' ],
+    c : 'array replaced by this',
+    d : 'array replaced by this',
+    e : structure1.e,
+    f : new BufferRaw( 13 ),
+    g : new F32x([ 1,2,3 ]),
+    h : false,
+    i : true,
+    j : 'map replaced by this',
+  }
+
+  var got = _.replicate
+  ({
+    src : structure1,
+    onUp : handleUp,
+    onDown : handleDown,
+  });
+  test.identical( got, expected );
+
+  test.case = 'expectedUpPaths';
+  test.identical( handleUpPaths, expectedUpPaths );
+  test.case = 'expectedUpIndices';
+  test.identical( handleUpIndices, expectedUpIndices );
+  test.case = 'expectedUpPaths';
+  test.identical( handleDownPaths, expectedDownPaths );
+  test.case = 'expectedDownIndices';
+  test.identical( handleDownIndices, expectedDownIndices );
+
+}
+
+//
+
+function exportStructure( test )
+{
+
+  Obj1.prototype.exportStructure = exportStructure;
+  Obj2.prototype.exportStructure = exportStructure;
+
+  exportStructure.defaults =
+  {
+    src : null,
+    dst : null,
+  }
+
+  let obj1 = new Obj1({ a : '1', b : '2' });
+  let obj2 = new Obj1({ c : '3', d : obj1 });
+
+  /* */
+
+  test.case = 'obj1.exportStructure';
+  var exp =
+  {
+    'a' : '1',
+    'b' : '2',
+    'exportStructure' : exportStructure,
+  }
+  var got = obj1.exportStructure();
+  test.identical( got, exp );
+  test.is( got !== obj1 )
+
+  /* */
+
+  test.case = 'obj2.exportStructure';
+  var exp =
+  {
+    'c' : '3',
+    'd' :
+    {
+      'a' : '1',
+      'b' : '2',
+      'exportStructure' : exportStructure,
+    },
+    'exportStructure' : exportStructure,
+  }
+  var got = obj2.exportStructure();
+  test.identical( got, exp );
+  test.is( got !== obj2 )
+
+  /* */
+
+  function Obj1( o )
+  {
+    return _.mapExtend( this, o );
+  }
+  function Obj2( o )
+  {
+    return _.mapExtend( this, o );
+  }
+
+  function exportStructure( o )
+  {
+    let resource = this;
+
+    o = _.routineOptions( exportStructure, arguments );
+
+    if( o.src === null )
+    o.src = resource;
+
+    if( o.dst === null )
+    o.dst = Object.create( null );
+
+    o.dst = _.replicate
+    ({
+      src : o.src,
+      dst : o.dst,
+      onSrcChanged : onSrcChanged,
+      onAscend : onAscend,
+    });
+
+    return o.dst;
+
+    function onSrcChanged()
+    {
+      let it = this;
+
+      if( !it.iterable )
+      if( _.instanceIs( it.src ) )
+      {
+        if( it.src === resource )
+        {
+          it.srcToIterate = _.mapExtend( null, it.src );
+          it.iterable = _.looker.containerNameToIdMap.map;
+        }
+      }
+
+    }
+
+    function onAscend()
+    {
+      let it = this;
+
+      if( !it.iterable && _.instanceIs( it.src ) )
+      {
+        it.dst = _.routineCallButOnly( it.src, 'exportStructure', o, [ 'src', 'dst' ] );
+      }
+      else
+      {
+        _.Looker.Iterator.onAscend.call( this );
+      }
+
+    }
+
+  }
 
 }
 
@@ -203,7 +345,7 @@ function trivial( test )
 var Self =
 {
 
-  name : 'Tools/base/l4/Replicate',
+  name : 'Tools.base.l3.Replicate',
   silencing : 1,
   enabled : 1,
 
@@ -213,7 +355,11 @@ var Self =
 
   tests :
   {
+
     trivial,
+    replaceOfSrc,
+    exportStructure,
+
   }
 
 }

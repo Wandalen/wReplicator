@@ -9,10 +9,6 @@
 */
 
 /**
- * @file l4/Replicator.s.
- */
-
-/**
  * Collection of routines to replicate a complex data structure.
  */
 
