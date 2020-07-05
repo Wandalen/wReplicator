@@ -156,6 +156,7 @@ module:
           export: 1
         path:
           - ../proto
+          - ../proto/Integration.test.s
           - ../proto/dwtools
           - ../proto/dwtools/Tools.s
           - ../proto/dwtools/abase
@@ -1491,6 +1492,4 @@ module:
       ../.im.will.yml:
         hash: 48b27c971944396bdb2f5af2cddbb8c1
         size: 5008
-      wReplicator.out.will.yml:
-        hash: 054d302f46561e447fe3e1847f172d04
-        size: 37979
+      wReplicator.out.will.yml: *ref_0
