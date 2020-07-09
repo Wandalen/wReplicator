@@ -2,10 +2,13 @@ format: outwillfile-2.0
 root:
   - wReplicator.out
 consistency:
-  ../.ex.will.yml: &ref_0
+  wReplicator.out.will.yml: &ref_0
+    hash: e7bc7b9c4dbc23ec5696cc31d42d8ec2
+    size: 38150
+  ../.ex.will.yml: &ref_1
     hash: 4c8c1d0d65e0f52e5586a7a060f17c34
     size: 1790
-  ../.im.will.yml: &ref_1
+  ../.im.will.yml: &ref_2
     hash: 16da840a7708e72a302005d462e8c8fc
     size: 5005
 module:
@@ -18,18 +21,18 @@ module:
         traverses input data structure deeply producing a copy of it.
       enabled: 1
       version: 0.4.0
-      interpreters: &ref_2
+      interpreters:
         - njs >= 10.0.0
         - chrome >= 60.0.0
         - firefox >= 60.0.0
-      keywords: &ref_3
+      keywords:
         - wTools
       license: MIT
       author: Kostiantyn Wandalen <wanalen@01.school>
-      contributors: &ref_4
+      contributors:
         - Kostiantyn Wandalen <wanalen@01.school>
       npm.name: wreplicator
-      npm.scripts: &ref_5
+      npm.scripts:
         test: wtest .run proto/**
         docgen: wdocgen .build proto
     path:
@@ -691,6 +694,24 @@ module:
           content: prime
         inherit:
           - files.transpile
+      exported.proto.export:
+        opts:
+          filePath: 'reflector::exported.proto.export'
+        criterion:
+          generated: 1
+          content: proto
+          export: 1
+        inherit:
+          - files.reflect
+      exported.files.proto.export:
+        opts:
+          filePath: 'reflector::exported.files.proto.export'
+        criterion:
+          generated: 1
+          content: proto
+          export: 1
+        inherit:
+          - files.reflect
     build:
       proto.export:
         steps:
@@ -779,8 +800,9 @@ module:
           content: proto
           export: 1
     consistency:
-      ../.ex.will.yml: *ref_0
-      ../.im.will.yml: *ref_1
+      wReplicator.out.will.yml: *ref_0
+      ../.ex.will.yml: *ref_1
+      ../.im.will.yml: *ref_2
   ../:
     about:
       name: wReplicator
@@ -790,13 +812,20 @@ module:
         traverses input data structure deeply producing a copy of it.
       enabled: 1
       version: 0.4.0
-      interpreters: *ref_2
-      keywords: *ref_3
+      interpreters:
+        - njs >= 10.0.0
+        - chrome >= 60.0.0
+        - firefox >= 60.0.0
+      keywords:
+        - wTools
       license: MIT
       author: Kostiantyn Wandalen <wanalen@01.school>
-      contributors: *ref_4
+      contributors:
+        - Kostiantyn Wandalen <wanalen@01.school>
       npm.name: wreplicator
-      npm.scripts: *ref_5
+      npm.scripts:
+        test: wtest .run proto/**
+        docgen: wdocgen .build proto
     path:
       module.willfiles:
         criterion:
@@ -1463,3 +1492,6 @@ module:
       ../.im.will.yml:
         hash: 16da840a7708e72a302005d462e8c8fc
         size: 5005
+      wReplicator.out.will.yml:
+        hash: e7bc7b9c4dbc23ec5696cc31d42d8ec2
+        size: 38150
