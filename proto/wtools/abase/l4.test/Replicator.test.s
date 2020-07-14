@@ -312,7 +312,7 @@ function exportStructure( test )
       {
         if( it.src === resource )
         {
-          it.srcToIterate = _.mapExtend( null, it.src );
+          it.srcEffective = _.mapExtend( null, it.src );
           it.iterable = _.looker.containerNameToIdMap.map;
         }
       }
