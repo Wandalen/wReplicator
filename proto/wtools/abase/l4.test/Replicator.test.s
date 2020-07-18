@@ -345,7 +345,7 @@ function exportStructure( test )
 let Self =
 {
 
-  name : 'Tools.base.l3.Replicate',
+  name : 'Tools.l3.Replicate',
   silencing : 1,
   enabled : 1,
 
