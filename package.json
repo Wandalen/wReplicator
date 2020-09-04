@@ -1,6 +1,6 @@
 {
   "name" : "wreplicator",
-  "version" : "0.3.111",
+  "version" : "0.3.112",
   "description" : "Collection of routines to replicate a complex data structure. It traverses input data structure deeply producing a copy of it.",
   "author" : "Kostiantyn Wandalen <wanalen@01.school>",
   "license" : "MIT",
