@@ -2,7 +2,7 @@
 about :
 
   name : 'wReplicator'
-  description : 'Collection of routines to replicate a complex data structure. It traverses input data structure deeply producing a copy of it.'
+  description : 'Collection of cross-platform routines to replicate a complex data structure. It traverses input data structure deeply producing a copy of it.'
   version : '0.4.0'
   enabled : 1
   interpreters :

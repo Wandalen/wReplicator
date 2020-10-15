@@ -3,13 +3,13 @@
 'use strict';
 
 /**
- * Collection of routines to replicate a complex data structure. It traverse input data structure deeply producing a copy of it.Collection of routines to replicate a complex data structure. It traverses input data structure deeply producing a copy of it.
+ * Collection of cross-platform routines to replicate a complex data structure. It traverse input data structure deeply producing a copy of it.Collection of cross-platform routines to replicate a complex data structure. It traverses input data structure deeply producing a copy of it.
   @module Tools/base/Replicator
   @extends Tools
 */
 
 /**
- * Collection of routines to replicate a complex data structure.
+ * Collection of cross-platform routines to replicate a complex data structure.
  */
 
 if( typeof module !== 'undefined' )
@@ -174,7 +174,7 @@ function visitDownEnd()
 
 //
 
-function replicate_pre( routine, args )
+function replicate_head( routine, args )
 {
 
   let o = args[ 0 ];
@@ -210,7 +210,7 @@ function replicate_pre( routine, args )
   }
 
   let o2 = optionsFor( o );
-  let it = _.look.pre( _.replicate, [ o2 ] );
+  let it = _.look.head( _.replicate, [ o2 ] );
 
   _.assert( o.it === it || o.it === null );
 
@@ -384,7 +384,7 @@ defaults.prevReplicateIteration = null;
  */
 
 
-let replicateIt = _.routineFromPreAndBody( replicate_pre, replicateIt_body );
+let replicateIt = _.routineUnite( replicate_head, replicateIt_body );
 
 //
 
@@ -415,7 +415,7 @@ _.routineExtend( replicate_body, replicateIt.body );
  * @module Tools/base/Replicator
  */
 
-let replicate = _.routineFromPreAndBody( replicate_pre, replicate_body );
+let replicate = _.routineUnite( replicate_head, replicate_body );
 
 // --
 // extend looker

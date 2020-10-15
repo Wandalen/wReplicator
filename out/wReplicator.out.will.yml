@@ -17,7 +17,7 @@ module:
       name: wReplicator
       org: noorg
       description: >-
-        Collection of routines to replicate a complex data structure. It
+        Collection of cross-platform routines to replicate a complex data structure. It
         traverses input data structure deeply producing a copy of it.
       enabled: 1
       version: 0.4.0
@@ -808,7 +808,7 @@ module:
       name: wReplicator
       org: noorg
       description: >-
-        Collection of routines to replicate a complex data structure. It
+        Collection of cross-platform routines to replicate a complex data structure. It
         traverses input data structure deeply producing a copy of it.
       enabled: 1
       version: 0.4.0
