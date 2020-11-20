@@ -68,17 +68,17 @@ function trivial( test )
 
   var got = _.replicate({ src : structure1 });
   test.identical( got, structure1 );
-  test.is( got !== structure1 );
-  test.is( got.a === structure1.a );
-  test.is( got.b === structure1.b );
-  test.is( got.c !== structure1.c );
-  test.is( got.d !== structure1.d );
-  test.is( got.e === structure1.e );
-  test.is( got.f === structure1.f );
-  test.is( got.g === structure1.g );
-  test.is( got.h === structure1.h );
-  test.is( got.i === structure1.i );
-  test.is( got.j !== structure1.j );
+  test.true( got !== structure1 );
+  test.true( got.a === structure1.a );
+  test.true( got.b === structure1.b );
+  test.true( got.c !== structure1.c );
+  test.true( got.d !== structure1.d );
+  test.true( got.e === structure1.e );
+  test.true( got.f === structure1.f );
+  test.true( got.g === structure1.g );
+  test.true( got.h === structure1.h );
+  test.true( got.i === structure1.i );
+  test.true( got.j !== structure1.j );
 
   /* */
 
@@ -91,17 +91,17 @@ function trivial( test )
     onDown : handleDown,
   });
   test.identical( got, structure1 );
-  test.is( got !== structure1 );
-  test.is( got.a === structure1.a );
-  test.is( got.b === structure1.b );
-  test.is( got.c !== structure1.c );
-  test.is( got.d !== structure1.d );
-  test.is( got.e === structure1.e );
-  test.is( got.f === structure1.f );
-  test.is( got.g === structure1.g );
-  test.is( got.h === structure1.h );
-  test.is( got.i === structure1.i );
-  test.is( got.j !== structure1.j );
+  test.true( got !== structure1 );
+  test.true( got.a === structure1.a );
+  test.true( got.b === structure1.b );
+  test.true( got.c !== structure1.c );
+  test.true( got.d !== structure1.d );
+  test.true( got.e === structure1.e );
+  test.true( got.f === structure1.f );
+  test.true( got.g === structure1.g );
+  test.true( got.h === structure1.h );
+  test.true( got.i === structure1.i );
+  test.true( got.j !== structure1.j );
 
   test.case = 'expectedUpPaths';
   test.identical( handleUpPaths, expectedUpPaths );
@@ -250,7 +250,7 @@ function exportStructure( test )
   }
   var got = obj1.exportStructure();
   test.identical( got, exp );
-  test.is( got !== obj1 )
+  test.true( got !== obj1 )
 
   /* */
 
@@ -268,7 +268,7 @@ function exportStructure( test )
   }
   var got = obj2.exportStructure();
   test.identical( got, exp );
-  test.is( got !== obj2 )
+  test.true( got !== obj2 )
 
   /* */
 
