@@ -1,4 +1,5 @@
-( function _Replicator_test_s_() {
+( function _Replicator_test_s_()
+{
 
 'use strict';
 
@@ -32,7 +33,7 @@ function trivial( test )
     d : [ 1, { date : new Date() } ],
     e : function(){},
     f : new BufferRaw( 13 ),
-    g : new F32x([ 1,2,3 ]),
+    g : new F32x([ 1, 2, 3 ]),
     h : false,
     i : true,
     j : { a : 1, b : 2 },
@@ -127,7 +128,7 @@ function replaceOfSrc( test )
     d : [ 1, { date : new Date() } ],
     e : function(){},
     f : new BufferRaw( 13 ),
-    g : new F32x([ 1,2,3 ]),
+    g : new F32x([ 1, 2, 3 ]),
     h : false,
     i : true,
     j : { a : 1, b : 2 },
@@ -197,7 +198,7 @@ function replaceOfSrc( test )
     d : 'array replaced by this',
     e : structure1.e,
     f : new BufferRaw( 13 ),
-    g : new F32x([ 1,2,3 ]),
+    g : new F32x([ 1, 2, 3 ]),
     h : false,
     i : true,
     j : 'map replaced by this',
@@ -246,7 +247,7 @@ function exportStructure( test )
   {
     'a' : '1',
     'b' : '2',
-    'exportStructure' : exportStructure,
+    exportStructure,
   }
   var got = obj1.exportStructure();
   test.identical( got, exp );
@@ -262,9 +263,9 @@ function exportStructure( test )
     {
       'a' : '1',
       'b' : '2',
-      'exportStructure' : exportStructure,
+      exportStructure,
     },
-    'exportStructure' : exportStructure,
+    exportStructure,
   }
   var got = obj2.exportStructure();
   test.identical( got, exp );
@@ -297,8 +298,8 @@ function exportStructure( test )
     ({
       src : o.src,
       dst : o.dst,
-      onSrcChanged : onSrcChanged,
-      onAscend : onAscend,
+      onSrcChanged,
+      onAscend,
     });
 
     return o.dst;

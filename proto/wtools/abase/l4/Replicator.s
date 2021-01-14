@@ -1,4 +1,5 @@
-( function _Replicator_s_() {
+( function _Replicator_s_()
+{
 
 'use strict';
 
