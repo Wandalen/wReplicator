@@ -8,7 +8,7 @@ Collection of cross-platform routines to replicate a complex data structure. It 
 git clone https://github.com/Wandalen/wReplicator
 cd wReplicator
 npm install
-node sample/Sample.s
+node sample/trivial/Sample.s
 ```
 
 ## To add to your project
