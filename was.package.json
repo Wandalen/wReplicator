@@ -17,6 +17,6 @@
     "url" : "https://github.com/Wandalen/wReplicator/issues"
   },
   "dependencies" : { "wTools" : "", "wlooker" : "" },
-  "devDependencies" : { "wTesting" : "", "eslint" : "7.1.0" },
+  "devDependencies" : { "wTesting" : "", "eslint" : "7.1.0", "wreplicator": "file:." },
   "keywords" : [ "wTools" ]
 }
