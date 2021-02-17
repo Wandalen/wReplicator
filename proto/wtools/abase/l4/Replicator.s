@@ -200,11 +200,9 @@ function replicate_head( routine, args )
   if( o.it )
   {
     _.assert( o.src === null );
-    // _.assert( _.lookIterationIs( o.it ) );
     _.assert( Self.iterationIs( o.it ), () => 'Expects iteration of ' + Self.constructor.name + ' but got ' + _.toStrShort( o.it ) );
-    _.assert( 0, 'not tested' );
+    _.assert( 0, 'not tested' ); /* xxx */
     o.src = o.it.src;
-    debugger; xxx
     o.prevReplicateIteration = o.it;
     // o.prevReplicateOptions = o.it.iterator;
     // o.prevReplicateOptions = o.it.replicateOptions;
