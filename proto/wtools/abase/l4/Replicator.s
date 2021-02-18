@@ -52,7 +52,7 @@ function dstWriteDownEval()
       _.assert( 0, 'Cant write into terminal' );
     }
   }
-  else if( it.iterable === _.looker.containerNameToIdMap.partible )
+  else if( it.iterable === _.looker.containerNameToIdMap.countable )
   {
     it.dstWriteDown = function dstWriteDown( eit )
     {
@@ -110,7 +110,7 @@ function dstMake()
   {
     it.dst = it.src;
   }
-  else if( it.iterable === _.looker.containerNameToIdMap.partible )
+  else if( it.iterable === _.looker.containerNameToIdMap.countable )
   {
     it.dst = [];
   }
