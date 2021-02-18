@@ -52,7 +52,7 @@ function dstWriteDownEval()
       _.assert( 0, 'Cant write into terminal' );
     }
   }
-  else if( it.iterable === _.looker.containerNameToIdMap.long )
+  else if( it.iterable === _.looker.containerNameToIdMap.partible )
   {
     it.dstWriteDown = function dstWriteDown( eit )
     {
@@ -60,7 +60,7 @@ function dstWriteDownEval()
       this.dst.push( eit.dst );
     }
   }
-  else if( it.iterable === _.looker.containerNameToIdMap.map )
+  else if( it.iterable === _.looker.containerNameToIdMap.auxiliary )
   {
     it.dstWriteDown = function dstWriteDown( eit )
     {
@@ -110,11 +110,11 @@ function dstMake()
   {
     it.dst = it.src;
   }
-  else if( it.iterable === _.looker.containerNameToIdMap.long )
+  else if( it.iterable === _.looker.containerNameToIdMap.partible )
   {
     it.dst = [];
   }
-  else if( it.iterable === _.looker.containerNameToIdMap.map )
+  else if( it.iterable === _.looker.containerNameToIdMap.auxiliary )
   {
     it.dst = Object.create( null );
   }
