@@ -358,7 +358,7 @@ defaults.Looker = null;
 defaults.it = null;
 defaults.root = null;
 defaults.src = null;
-defaults.dst =  null;
+defaults.dst = null;
 
 defaults.prevReplicateIteration = null;
 
