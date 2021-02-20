@@ -204,14 +204,13 @@ function replicate_head( routine, args )
     _.assert( 0, 'not tested' ); /* xxx */
     o.src = o.it.src;
     o.prevReplicateIteration = o.it;
-    // o.prevReplicateOptions = o.it.iterator;
-    // o.prevReplicateOptions = o.it.replicateOptions;
   }
 
   let o2 = optionsFor( o );
   let it = _.look.head( _.replicate, [ o2 ] );
 
-  _.assert( o.it === it || o.it === null );
+  _.assert( o.it === it ); /* yyy */
+  // _.assert( o === Object.getPrototypeOf( it ) );
 
   return it;
 
@@ -264,7 +263,7 @@ function replicate_head( routine, args )
 //     size += bufferSize;
 //
 //     let bufferConstructorName;
-//     if( srcBuffer ) /* yyy */
+//     if( srcBuffer )
 //     {
 //       let longDescriptor = _.LongTypeToDescriptorsHash.get( srcBuffer.constructor );
 //
@@ -346,7 +345,7 @@ function replicate_head( routine, args )
 function replicateIt_body( it )
 {
   _.assert( arguments.length === 1, 'Expects single argument' );
-  _.assert( _.lookerIs( it.Looker ) );
+  _.assert( _.looker.is( it.Looker ) );
   _.assert( it.looker === undefined );
   _.look.body( it );
   return it;
