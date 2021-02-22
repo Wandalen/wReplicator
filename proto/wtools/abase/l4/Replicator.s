@@ -348,7 +348,7 @@ function replicate_head( routine, args )
 //   // if( o.it )
 //   // {
 //   //   _.assert( o.src === null );
-//   //   _.assert( _.replicator.iterationIs( o.it ), () => 'Expects iteration of ' + Self.constructor.name + ' but got ' + _.toStrShort( o.it ) );
+//   //   _.assert( _.replicator.iterationIs( o.it ), () => 'Expects iteration of ' + Self.constructor.name + ' but got ' + _.entity.exportStringShort( o.it ) );
 //   //   _.assert( 0, 'not tested' ); /* xxx */
 //   //   o.src = o.it.src;
 //   //   o.prevReplicateIteration = o.it;
