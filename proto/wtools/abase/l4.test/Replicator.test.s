@@ -314,7 +314,7 @@ function exportStructure( test )
         if( it.src === resource )
         {
           it.srcEffective = _.mapExtend( null, it.src );
-          it.iterable = _.looker.containerNameToIdMap.auxiliary;
+          it.iterable = _.looker.containerNameToIdMap.aux;
         }
       }
 
