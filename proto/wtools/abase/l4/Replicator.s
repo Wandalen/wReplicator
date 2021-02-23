@@ -44,14 +44,19 @@ Defaults.dst = null;
 let Replicator = Object.create( Parent );
 Replicator.constructor = function Replicator(){};
 Replicator.Looker = Replicator;
+Replicator.head = head;
+Replicator.optionsFromArguments = optionsFromArguments;
+Replicator.optionsForm = optionsForm;
+Replicator.optionsToIteration = optionsToIteration;
+Replicator.start = start;
 Replicator.dstWriteDownEval = dstWriteDownEval;
 Replicator.dstMake = dstMake;
 Replicator.srcChanged = srcChanged;
 Replicator.visitUpEnd = visitUpEnd;
 Replicator.visitDownEnd = visitDownEnd;
-Replicator.optionsFromArguments = optionsFromArguments;
-Replicator.optionsForm = optionsForm;
-Replicator.optionsToIteration = optionsToIteration;
+
+let Iterator = Replicator.Iterator = _.mapExtend( null, Replicator.Iterator );
+Iterator.result = null;
 
 let Iteration = Replicator.Iteration = _.mapExtend( null, Replicator.Iteration );
 Iteration.dst = null;
@@ -62,6 +67,140 @@ Iteration.dstWritingDown = true;
 // --
 // routines
 // --
+
+function head( routine, args )
+{
+  let o = Self.optionsFromArguments( args );
+  o.Looker = o.Looker || routine.defaults.Looker || Self;
+  _.routineOptionsPreservingUndefines( routine, o );
+  o.Looker.optionsForm( routine, o );
+  let it = o.Looker.optionsToIteration( o );
+  return it;
+}
+
+//
+
+function optionsFromArguments( args )
+{
+  let o = args[ 0 ];
+
+  if( args.length === 2 )
+  {
+    if( _.replicator.iterationIs( args[ 0 ] ) )
+    o = { it : args[ 0 ], dst : args[ 1 ] }
+    else
+    o = { src : args[ 0 ], dst : args[ 1 ] }
+  }
+
+  _.assert( args.length === 1 || args.length === 2 );
+  _.assert( arguments.length === 1 );
+  _.assert( _.mapIs( o ) );
+
+  return o;
+}
+
+//
+
+function optionsForm( routine, o )
+{
+  Parent.optionsForm.call( this, routine, o );
+
+  _.assert( arguments.length === 2 );
+  // _.assert( args.length === 1 || args.length === 2 );
+  _.assert( o.onUp === null || _.routineIs( o.onUp ) );
+  _.assert( o.onDown === null || _.routineIs( o.onDown ) );
+
+  // o.prevReplicateIteration = null; /* xxx */
+  if( o.root === null ) /* xxx */
+  o.root = o.src;
+
+  _.assert( o.it === undefined );
+
+  // let o2 = optionsFor( o );
+
+  // if( o.Looker === null )
+  // o.Looker = Self;
+
+  _.assert( o.replicateOptions === undefined );
+
+  return o;
+
+  // let it = _.look.head( _.replicate, [ o2 ] );
+  //
+  // _.assert( o === Object.getPrototypeOf( Object.getPrototypeOf( it ) ) );
+  //
+  // return it;
+
+  /* */
+
+  // function optionsFor( o )
+  // {
+  //
+  //   let o2 = o;
+  //
+  //   if( o2.Looker === null )
+  //   o2.Looker = Self;
+  //
+  //   _.assert( o2.replicateOptions === undefined );
+  //   _.assert( arguments.length === 1 );
+  //
+  //   return o2;
+  // }
+
+  // _.assert( _.mapIs( o ) );
+  // _.assert( arguments.length === 2 );
+  // _.assert( o.onUpBegin === null || _.routineIs( o.onUpBegin ) );
+  // _.assert( o.onDownBegin === null || _.routineIs( o.onDownBegin ) );
+  // _.assert( _.strIs( o.selector ) );
+  // _.assert( _.strIs( o.downToken ) );
+  // _.assert( _.longHas( [ 'undefine', 'ignore', 'throw', 'error' ], o.missingAction ), 'Unknown missing action', o.missingAction );
+  // _.assert( o.selectorArray === undefined );
+  //
+  // if( o.it )
+  // {
+  //   debugger;
+  //   o.it.iteratorSelectorReset( o.selector );
+  //
+  //   _.assert( o.prevSelectIteration === null || o.prevSelectIteration === o.it );
+  //   _.assert( o.src === null );
+  //
+  //   o.src = o.it.iterator.src;
+  //   o.selector = o.it.iterator.selector;
+  //   o.prevSelectIteration = o.it;
+  //
+  // }
+  //
+  // if( o.setting === null && o.set !== null )
+  // o.setting = 1;
+  // if( o.creating === null )
+  // o.creating = !!o.setting;
+  //
+  // if( o.Looker === null )
+  // o.Looker = Self;
+  //
+  // return o;
+}
+
+//
+
+function optionsToIteration( o )
+{
+  let it = Parent.optionsToIteration.call( this, o );
+  return it;
+}
+
+//
+
+function start()
+{
+  let it = this;
+  _.assert( arguments.length === 0, 'Expects no arguments' );
+  it.look();
+  it.iterator.result = it.dst;
+  return it;
+}
+
+//
 
 function dstWriteDownEval()
 {
@@ -201,125 +340,15 @@ function visitDownEnd()
 
 //
 
-function optionsFromArguments( args )
-{
-  let o = args[ 0 ];
-
-  if( args.length === 2 )
-  {
-    if( _.replicator.iterationIs( args[ 0 ] ) )
-    o = { it : args[ 0 ], dst : args[ 1 ] }
-    else
-    o = { src : args[ 0 ], dst : args[ 1 ] }
-  }
-
-  _.assert( args.length === 1 || args.length === 2 );
-  _.assert( arguments.length === 1 );
-  _.assert( _.mapIs( o ) );
-
-  return o;
-}
-
-//
-
-function optionsForm( routine, o )
-{
-  Parent.optionsForm.call( this, routine, o );
-
-  _.assert( arguments.length === 2 );
-  // _.assert( args.length === 1 || args.length === 2 );
-  _.assert( o.onUp === null || _.routineIs( o.onUp ) );
-  _.assert( o.onDown === null || _.routineIs( o.onDown ) );
-
-  // o.prevReplicateIteration = null; /* xxx */
-  if( o.root === null ) /* xxx */
-  o.root = o.src;
-
-  _.assert( o.it === undefined );
-
-  // let o2 = optionsFor( o );
-
-  // if( o.Looker === null )
-  // o.Looker = Self;
-
-  _.assert( o.replicateOptions === undefined );
-
-  return o;
-
-  // let it = _.look.head( _.replicate, [ o2 ] );
-  //
-  // _.assert( o === Object.getPrototypeOf( Object.getPrototypeOf( it ) ) );
-  //
-  // return it;
-
-  /* */
-
-  // function optionsFor( o )
-  // {
-  //
-  //   let o2 = o;
-  //
-  //   if( o2.Looker === null )
-  //   o2.Looker = Self;
-  //
-  //   _.assert( o2.replicateOptions === undefined );
-  //   _.assert( arguments.length === 1 );
-  //
-  //   return o2;
-  // }
-
-  // _.assert( _.mapIs( o ) );
-  // _.assert( arguments.length === 2 );
-  // _.assert( o.onUpBegin === null || _.routineIs( o.onUpBegin ) );
-  // _.assert( o.onDownBegin === null || _.routineIs( o.onDownBegin ) );
-  // _.assert( _.strIs( o.selector ) );
-  // _.assert( _.strIs( o.downToken ) );
-  // _.assert( _.longHas( [ 'undefine', 'ignore', 'throw', 'error' ], o.missingAction ), 'Unknown missing action', o.missingAction );
-  // _.assert( o.selectorArray === undefined );
-  //
-  // if( o.it )
-  // {
-  //   debugger;
-  //   o.it.iteratorSelectorReset( o.selector );
-  //
-  //   _.assert( o.prevSelectIteration === null || o.prevSelectIteration === o.it );
-  //   _.assert( o.src === null );
-  //
-  //   o.src = o.it.iterator.src;
-  //   o.selector = o.it.iterator.selector;
-  //   o.prevSelectIteration = o.it;
-  //
-  // }
-  //
-  // if( o.setting === null && o.set !== null )
-  // o.setting = 1;
-  // if( o.creating === null )
-  // o.creating = !!o.setting;
-  //
-  // if( o.Looker === null )
-  // o.Looker = Self;
-  //
-  // return o;
-}
-
-//
-
-function optionsToIteration( o )
-{
-  let it = Parent.optionsToIteration.call( this, o );
-  return it;
-}
-
-//
-
 function replicate_head( routine, args )
 {
-  let o = Self.optionsFromArguments( args );
-  o.Looker = o.Looker || routine.defaults.Looker || Self;
-  _.routineOptionsPreservingUndefines( routine, o );
-  o.Looker.optionsForm( routine, o );
-  let it = o.Looker.optionsToIteration( o );
-  return it;
+  return Self.head( routine, args );
+  // let o = Self.optionsFromArguments( args );
+  // o.Looker = o.Looker || routine.defaults.Looker || Self;
+  // _.routineOptionsPreservingUndefines( routine, o );
+  // o.Looker.optionsForm( routine, o );
+  // let it = o.Looker.optionsToIteration( o );
+  // return it;
 }
 
 // {

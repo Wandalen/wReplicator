@@ -117,6 +117,58 @@ function trivial( test )
 
 //
 
+/* xxx : write similar tests for other lookers */
+function replicateIteratorResult( test )
+{
+
+  /* */
+
+  test.case = 'control';
+
+  var src =
+  {
+    a : 'str',
+    b : [ 'str', { c : 13, d : [], e : {} } ],
+  }
+
+  var expected =
+  {
+    a : 'str',
+    b : [ 'str', { c : 13, d : [], e : {} } ],
+  }
+
+  var got = _.replicate({ src });
+  test.identical( got, expected );
+  test.identical( src, expected );
+
+  /* */
+
+  test.case = 'iterator.result';
+
+  var src =
+  {
+    a : 'str',
+    b : [ 'str', { c : 13, d : [], e : {} } ],
+  }
+
+  var expected =
+  {
+    a : 'str',
+    b : [ 'str', { c : 13, d : [], e : {} } ],
+  }
+
+  var it = _.replicate.head( _.replicate, [ { src } ] );
+  var got = it.start();
+  test.true( got === it );
+  test.identical( it.result, expected );
+  test.identical( src, expected );
+
+  /* */
+
+}
+
+//
+
 function replaceOfSrc( test )
 {
 
@@ -358,6 +410,7 @@ let Self =
   {
 
     trivial,
+    replicateIteratorResult,
     replaceOfSrc,
     exportStructure,
 
