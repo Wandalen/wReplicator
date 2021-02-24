@@ -118,7 +118,7 @@ function trivial( test )
 //
 
 /* xxx : write similar tests for other lookers */
-function replicateIteratorResult( test )
+function iteratorResult( test )
 {
 
   /* */
@@ -410,7 +410,7 @@ let Self =
   {
 
     trivial,
-    replicateIteratorResult,
+    iteratorResult,
     replaceOfSrc,
     exportStructure,
 

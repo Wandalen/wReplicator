@@ -30,7 +30,7 @@ _.replicator = _.replicator || Object.create( null );
 _.assert( !!_realGlobal_ );
 
 // --
-// extend looker
+// relations
 // --
 
 var Defaults = _.mapExtend( null, _.look.defaults )
@@ -40,29 +40,6 @@ Defaults.root = null;
 Defaults.src = null;
 Defaults.dst = null;
 // Defaults.prevReplicateIteration = null;
-
-let Replicator = Object.create( Parent );
-Replicator.constructor = function Replicator(){};
-Replicator.Looker = Replicator;
-Replicator.head = head;
-Replicator.optionsFromArguments = optionsFromArguments;
-Replicator.optionsForm = optionsForm;
-Replicator.optionsToIteration = optionsToIteration;
-Replicator.start = start;
-Replicator.dstWriteDownEval = dstWriteDownEval;
-Replicator.dstMake = dstMake;
-Replicator.srcChanged = srcChanged;
-Replicator.visitUpEnd = visitUpEnd;
-Replicator.visitDownEnd = visitDownEnd;
-
-let Iterator = Replicator.Iterator = _.mapExtend( null, Replicator.Iterator );
-Iterator.result = null;
-
-let Iteration = Replicator.Iteration = _.mapExtend( null, Replicator.Iteration );
-Iteration.dst = null;
-Iteration.dstMaking = true;
-Iteration.dstWriteDown = null;
-Iteration.dstWritingDown = true;
 
 // --
 // routines
@@ -110,9 +87,9 @@ function optionsForm( routine, o )
   _.assert( o.onUp === null || _.routineIs( o.onUp ) );
   _.assert( o.onDown === null || _.routineIs( o.onDown ) );
 
-  // o.prevReplicateIteration = null; /* xxx */
-  if( o.root === null ) /* xxx */
-  o.root = o.src;
+  // o.prevReplicateIteration = null; /* yyy */
+  // if( o.root === null ) /* yyy */
+  // o.root = o.src;
 
   _.assert( o.it === undefined );
 
@@ -343,12 +320,6 @@ function visitDownEnd()
 function replicate_head( routine, args )
 {
   return Self.head( routine, args );
-  // let o = Self.optionsFromArguments( args );
-  // o.Looker = o.Looker || routine.defaults.Looker || Self;
-  // _.routineOptionsPreservingUndefines( routine, o );
-  // o.Looker.optionsForm( routine, o );
-  // let it = o.Looker.optionsToIteration( o );
-  // return it;
 }
 
 // {
@@ -378,7 +349,7 @@ function replicate_head( routine, args )
 //   // {
 //   //   _.assert( o.src === null );
 //   //   _.assert( _.replicator.iterationIs( o.it ), () => 'Expects iteration of ' + Self.constructor.name + ' but got ' + _.entity.exportStringShort( o.it ) );
-//   //   _.assert( 0, 'not tested' ); /* xxx */
+//   //   _.assert( 0, 'not tested' ); /* yyy */
 //   //   o.src = o.it.src;
 //   //   o.prevReplicateIteration = o.it;
 //   // }
@@ -531,16 +502,6 @@ function replicateIt_body( it )
 
 var defaults = replicateIt_body.defaults = Defaults;
 
-// var defaults = replicateIt_body.defaults = Object.create( _.look.defaults )
-//
-// defaults.Looker = null;
-// defaults.it = null;
-// defaults.root = null;
-// defaults.src = null;
-// defaults.dst = null;
-//
-// defaults.prevReplicateIteration = null;
-
 //
 
 /**
@@ -593,8 +554,42 @@ _.routineExtend( replicate_body, replicateIt.body );
 let replicate = _.routineUnite( replicate_head, replicate_body );
 
 // --
-// declare
+// relations
 // --
+
+var Defaults = _.mapExtend( null, _.look.defaults )
+Defaults.Looker = null;
+// Defaults.it = null;
+Defaults.root = null;
+Defaults.src = null;
+Defaults.dst = null;
+// Defaults.prevReplicateIteration = null;
+
+let Replicator = Object.create( Parent );
+Replicator.constructor = function Replicator(){};
+Replicator.Looker = Replicator;
+Replicator.makeAndLook = replicateIt;
+Replicator.head = head;
+Replicator.optionsFromArguments = optionsFromArguments;
+Replicator.optionsForm = optionsForm;
+Replicator.optionsToIteration = optionsToIteration;
+Replicator.start = start;
+Replicator.dstWriteDownEval = dstWriteDownEval;
+Replicator.dstMake = dstMake;
+Replicator.srcChanged = srcChanged;
+Replicator.visitUpEnd = visitUpEnd;
+Replicator.visitDownEnd = visitDownEnd;
+
+let Iterator = Replicator.Iterator = _.mapExtend( null, Replicator.Iterator );
+Iterator.result = null;
+
+let Iteration = Replicator.Iteration = _.mapExtend( null, Replicator.Iteration );
+Iteration.dst = null;
+Iteration.dstMaking = true;
+Iteration.dstWriteDown = null;
+Iteration.dstWritingDown = true;
+
+//
 
 let ReplicatorExtension =
 {
