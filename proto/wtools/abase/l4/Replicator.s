@@ -550,9 +550,6 @@ var defaults = replicateIt_body.defaults = Defaults;
  * @param {Object} o.root
  * @param {Object} o.src Source data structure
  * @param {Object} o.dst Target data structure
- * @param {*} o.iteratorExtension=null
- * @param {*} o.iterationExtension=null
- * @param {Boolean} o.iterationPreserve=null
  * @param {Number} o.recursive=Infinity
  *
  * @returns {Object} Returns `dst` structure.
