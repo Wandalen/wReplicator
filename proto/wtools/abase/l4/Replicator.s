@@ -97,14 +97,33 @@ function optionsToIteration( o )
   return it;
 }
 
+// //
+// 
+// function perform()
+// {
+//   let it = this;
+//   _.assert( arguments.length === 0, 'Expects no arguments' );
+//   it.performBegin();
+//   it.iterate();
+//   it.performEnd();
+//   return it;
+// }
+
 //
 
-function perform()
+function performBegin()
 {
   let it = this;
   _.assert( it.iterationProper( it ) );
   _.assert( arguments.length === 0, 'Expects no arguments' );
-  it.iterate();
+  return it;
+}
+
+//
+
+function performEnd()
+{
+  let it = this;
   it.iterator.result = it.dst;
   return it;
 }
@@ -369,7 +388,7 @@ function replicateIt_body( it )
   _.assert( arguments.length === 1, 'Expects single argument' );
   _.assert( _.looker.is( it.Looker ) );
   _.assert( it.looker === undefined );
-  _.look.body( it );
+  _.look.body( it ); /* xxx : perform */
   return it;
 }
 
@@ -406,6 +425,7 @@ function replicate_body( it )
   if( it.error )
   throw it.error;
 
+  debugger; /* xxx : result? */
   return it.dst;
 }
 
@@ -444,7 +464,9 @@ Replicator.head = head;
 Replicator.optionsFromArguments = optionsFromArguments;
 Replicator.optionsForm = optionsForm;
 Replicator.optionsToIteration = optionsToIteration;
-Replicator.perform = perform;
+// Replicator.perform = perform;
+Replicator.performBegin = performBegin;
+Replicator.performEnd = performEnd;
 Replicator.dstWriteDownEval = dstWriteDownEval;
 Replicator.dstMake = dstMake;
 Replicator.srcChanged = srcChanged;
@@ -465,22 +487,23 @@ Iteration.dstWritingDown = true;
 let ReplicatorExtension =
 {
 
-  Replicator,
+  ... _.looker,
 
+  // is : _.looker.is,
+  // iteratorIs : _.looker.iteratorIs,
+  // iterationIs : _.looker.iterationIs,
+  // define : _.looker.define,
+
+  Replicator,
   replicateIt,
   replicate,
-
-  is : _.looker.is,
-  iteratorIs : _.looker.iteratorIs,
-  iterationIs : _.looker.iterationIs,
-  make : _.looker.define,
 
 }
 
 let ToolsExtension =
 {
 
-  Replicator,
+  // Replicator,
 
   replicateIt,
   replicate,
