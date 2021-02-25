@@ -118,6 +118,7 @@ function trivial( test )
 //
 
 /* xxx : write similar tests for other lookers */
+/* qqq : make sure all lookers with field result have such test routine */
 function iteratorResult( test )
 {
 
@@ -158,7 +159,7 @@ function iteratorResult( test )
   }
 
   var it = _.replicate.head( _.replicate, [ { src } ] );
-  var got = it.start();
+  var got = it.perform();
   test.true( got === it );
   test.identical( it.result, expected );
   test.identical( src, expected );
