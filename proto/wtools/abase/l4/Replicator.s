@@ -98,7 +98,7 @@ function optionsToIteration( o )
 }
 
 // //
-// 
+//
 // function perform()
 // {
 //   let it = this;
@@ -275,7 +275,7 @@ function replicate_head( routine, args )
 
 //
 
-/* xxx qqq : implement please replication with buffer sepration
+/* zzz qqq : implement please replication with buffer sepration
 */
 
 // function cloneDataSeparatingBuffers( o )
@@ -388,7 +388,8 @@ function replicateIt_body( it )
   _.assert( arguments.length === 1, 'Expects single argument' );
   _.assert( _.looker.is( it.Looker ) );
   _.assert( it.looker === undefined );
-  _.look.body( it ); /* xxx : perform */
+  // _.look.body( it ); /* yyy : perform */
+  it.perform();
   return it;
 }
 
@@ -425,8 +426,8 @@ function replicate_body( it )
   if( it.error )
   throw it.error;
 
-  debugger; /* xxx : result? */
-  return it.dst;
+  // debugger; /* yyy : result? */
+  return it.result;
 }
 
 _.routineExtend( replicate_body, replicateIt.body );
