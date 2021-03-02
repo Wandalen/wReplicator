@@ -22,101 +22,6 @@ let _ = _global_.wTools;
 // tests
 // --
 
-function trivial( test )
-{
-
-  var structure1 =
-  {
-    a : 1,
-    b : 's',
-    c : [ 1, 3 ],
-    d : [ 1, { date : new Date() } ],
-    e : function(){},
-    f : new BufferRaw( 13 ),
-    g : new F32x([ 1, 2, 3 ]),
-    h : false,
-    i : true,
-    j : { a : 1, b : 2 },
-  }
-
-  let expectedUpPaths = [ '/', '/a', '/b', '/c', '/c/0', '/c/1', '/d', '/d/0', '/d/1', '/d/1/date', '/e', '/f', '/g', '/h', '/i', '/j', '/j/a', '/j/b' ];
-  let expectedUpIndices = [ null, 0, 1, 2, 0, 1, 3, 0, 1, 0, 4, 5, 6, 7, 8, 9, 0, 1 ];
-  let expectedDownPaths = [ '/a', '/b', '/c/0', '/c/1', '/c', '/d/0', '/d/1/date', '/d/1', '/d', '/e', '/f', '/g', '/h', '/i', '/j/a', '/j/b', '/j', '/' ];
-  let expectedDownIndices = [ 0, 1, 0, 1, 2, 0, 0, 1, 3, 4, 5, 6, 7, 8, 0, 1, 9, null ];
-
-  let handleUpPaths = [];
-  let handleUpIndices = [];
-  let handleDownPaths = [];
-  let handleDownIndices = [];
-
-  function handleUp()
-  {
-    let it = this;
-    handleUpPaths.push( it.path );
-    handleUpIndices.push( it.index );
-  }
-
-  function handleDown()
-  {
-    let it = this;
-    handleDownPaths.push( it.path );
-    handleDownIndices.push( it.index );
-  }
-
-  /* */
-
-  test.case = 'trivial';
-
-  var got = _.replicate({ src : structure1 });
-  test.identical( got, structure1 );
-  test.true( got !== structure1 );
-  test.true( got.a === structure1.a );
-  test.true( got.b === structure1.b );
-  test.true( got.c !== structure1.c );
-  test.true( got.d !== structure1.d );
-  test.true( got.e === structure1.e );
-  test.true( got.f === structure1.f );
-  test.true( got.g === structure1.g );
-  test.true( got.h === structure1.h );
-  test.true( got.i === structure1.i );
-  test.true( got.j !== structure1.j );
-
-  /* */
-
-  test.case = 'additional handlers';
-
-  var got = _.replicate
-  ({
-    src : structure1,
-    onUp : handleUp,
-    onDown : handleDown,
-  });
-  test.identical( got, structure1 );
-  test.true( got !== structure1 );
-  test.true( got.a === structure1.a );
-  test.true( got.b === structure1.b );
-  test.true( got.c !== structure1.c );
-  test.true( got.d !== structure1.d );
-  test.true( got.e === structure1.e );
-  test.true( got.f === structure1.f );
-  test.true( got.g === structure1.g );
-  test.true( got.h === structure1.h );
-  test.true( got.i === structure1.i );
-  test.true( got.j !== structure1.j );
-
-  test.case = 'expectedUpPaths';
-  test.identical( handleUpPaths, expectedUpPaths );
-  test.case = 'expectedUpIndices';
-  test.identical( handleUpIndices, expectedUpIndices );
-  test.case = 'expectedUpPaths';
-  test.identical( handleDownPaths, expectedDownPaths );
-  test.case = 'expectedDownIndices';
-  test.identical( handleDownIndices, expectedDownIndices );
-
-}
-
-//
-
 /* xxx : write similar tests for other lookers */
 /* qqq : make sure all lookers with field result have such test routine */
 function iteratorResult( test )
@@ -170,6 +75,118 @@ function iteratorResult( test )
 
 //
 
+function basic( test )
+{
+  /* qqq : use collecting of it principle in all relevant test routines */
+  /* qqq : add subroutine clean() and extend test routine */
+  let ups = [];
+  let downs = [];
+  let routine = function(){};
+
+  let src =
+  {
+    a : 1,
+    b : 's',
+    c : [ 1, 3 ],
+    d : [ 1, { date : new Date( Date.UTC( 1993, 12, 12 ) ) } ],
+    e : routine,
+    f : new BufferRaw( 13 ),
+    g : new F32x([ 1, 2, 3 ]),
+    h : false,
+    i : true,
+    j : { a : 1, b : 2 },
+  }
+
+  let clone =
+  {
+    a : 1,
+    b : 's',
+    c : [ 1, 3 ],
+    d : [ 1, { date : new Date( Date.UTC( 1993, 12, 12 ) ) } ],
+    e : routine,
+    f : new BufferRaw( 13 ),
+    g : new F32x([ 1, 2, 3 ]),
+    h : false,
+    i : true,
+    j : { a : 1, b : 2 },
+  }
+
+  /* */
+
+  test.case = 'basic';
+
+  var got = _.replicate({ src : src });
+  test.true( got !== src );
+  test.identical( got, clone );
+  test.identical( src, clone );
+  test.true( got !== src );
+  test.true( got.a === src.a );
+  test.true( got.b === src.b );
+  test.true( got.c !== src.c );
+  test.true( got.d !== src.d );
+  test.true( got.e === src.e );
+  test.true( got.f === src.f );
+  test.true( got.g === src.g );
+  test.true( got.h === src.h );
+  test.true( got.i === src.i );
+  test.true( got.j !== src.j );
+
+  /* */
+
+  test.case = 'additional handlers';
+
+  var got = _.replicate
+  ({
+    src : src,
+    onUp : handleUp,
+    onDown : handleDown,
+  });
+  test.true( got !== src );
+  test.identical( got, clone );
+  test.identical( src, clone );
+  test.true( got.a === src.a );
+  test.true( got.b === src.b );
+  test.true( got.c !== src.c );
+  test.true( got.d !== src.d );
+  test.true( got.e === src.e );
+  test.true( got.f === src.f );
+  test.true( got.g === src.g );
+  test.true( got.h === src.h );
+  test.true( got.i === src.i );
+  test.true( got.j !== src.j );
+
+  let expectedUpPaths = [ '/', '/a', '/b', '/c', '/c/0', '/c/1', '/d', '/d/0', '/d/1', '/d/1/date', '/e', '/f', '/g', '/h', '/i', '/j', '/j/a', '/j/b' ];
+  let expectedUpIndices = [ null, 0, 1, 2, 0, 1, 3, 0, 1, 0, 4, 5, 6, 7, 8, 9, 0, 1 ];
+  let expectedDownPaths = [ '/a', '/b', '/c/0', '/c/1', '/c', '/d/0', '/d/1/date', '/d/1', '/d', '/e', '/f', '/g', '/h', '/i', '/j/a', '/j/b', '/j', '/' ];
+  let expectedDownIndices = [ 0, 1, 0, 1, 2, 0, 0, 1, 3, 4, 5, 6, 7, 8, 0, 1, 9, null ];
+
+  test.description = 'expectedUpPaths';
+  test.identical( ups.map( ( it ) => it.path ), expectedUpPaths );
+  test.description = 'expectedUpIndices';
+  test.identical( ups.map( ( it ) => it.index ), expectedUpIndices );
+  test.description = 'expectedUpPaths';
+  test.identical( downs.map( ( it ) => it.path ), expectedDownPaths );
+  test.description = 'expectedDownIndices';
+  test.identical( downs.map( ( it ) => it.index ), expectedDownIndices );
+
+  /* */
+
+  function handleUp()
+  {
+    let it = this;
+    ups.push( _.mapExtend( null, it ) );
+  }
+
+  function handleDown()
+  {
+    let it = this;
+    downs.push( _.mapExtend( null, it ) );
+  }
+
+}
+
+//
+
 function replaceOfSrc( test )
 {
 
@@ -178,7 +195,7 @@ function replaceOfSrc( test )
     a : 1,
     b : '!replace!',
     c : [ 1, 2 ],
-    d : [ 1, { date : new Date() } ],
+    d : [ 1, { date : new Date( Date.UTC( 1993, 12, 12 ) ) } ],
     e : function(){},
     f : new BufferRaw( 13 ),
     g : new F32x([ 1, 2, 3 ]),
@@ -198,6 +215,43 @@ function replaceOfSrc( test )
   let handleDownIndices = [];
 
   let replacedForString = [ 'string', 'replaced', 'by', 'this' ];
+
+  /* */
+
+  test.case = '';
+
+  var expected =
+  {
+    a : 'number replaced by this',
+    b : [ 'string', 'replaced', 'by', 'this' ],
+    c : 'array replaced by this',
+    d : 'array replaced by this',
+    e : structure1.e,
+    f : new BufferRaw( 13 ),
+    g : new F32x([ 1, 2, 3 ]),
+    h : false,
+    i : true,
+    j : 'map replaced by this',
+  }
+
+  var got = _.replicate
+  ({
+    src : structure1,
+    onUp : handleUp,
+    onDown : handleDown,
+  });
+  test.identical( got, expected );
+
+  test.case = 'expectedUpPaths';
+  test.identical( handleUpPaths, expectedUpPaths );
+  test.case = 'expectedUpIndices';
+  test.identical( handleUpIndices, expectedUpIndices );
+  test.case = 'expectedUpPaths';
+  test.identical( handleDownPaths, expectedDownPaths );
+  test.case = 'expectedDownIndices';
+  test.identical( handleDownIndices, expectedDownIndices );
+
+  /* */
 
   function handleUp()
   {
@@ -238,41 +292,6 @@ function replaceOfSrc( test )
     handleDownPaths.push( it.path );
     handleDownIndices.push( it.index );
   }
-
-  /* */
-
-  test.case = '';
-
-  var expected =
-  {
-    a : 'number replaced by this',
-    b : [ 'string', 'replaced', 'by', 'this' ],
-    c : 'array replaced by this',
-    d : 'array replaced by this',
-    e : structure1.e,
-    f : new BufferRaw( 13 ),
-    g : new F32x([ 1, 2, 3 ]),
-    h : false,
-    i : true,
-    j : 'map replaced by this',
-  }
-
-  var got = _.replicate
-  ({
-    src : structure1,
-    onUp : handleUp,
-    onDown : handleDown,
-  });
-  test.identical( got, expected );
-
-  test.case = 'expectedUpPaths';
-  test.identical( handleUpPaths, expectedUpPaths );
-  test.case = 'expectedUpIndices';
-  test.identical( handleUpIndices, expectedUpIndices );
-  test.case = 'expectedUpPaths';
-  test.identical( handleDownPaths, expectedDownPaths );
-  test.case = 'expectedDownIndices';
-  test.identical( handleDownIndices, expectedDownIndices );
 
 }
 
@@ -392,6 +411,51 @@ function exportStructure( test )
 
 }
 
+//
+
+function iteratorContinue( test )
+{
+  let ups = [];
+  let downs = [];
+  let src =
+  {
+    a : 1,
+    b : 's',
+  }
+  let clone =
+  {
+    a : 1,
+    b : 's',
+  }
+
+  /* */
+
+  test.case = 'basic';
+  debugger;
+  var got = _.replicate({ src : src, onUp : handleUp, onDown : handleDown });
+  debugger;
+  test.true( got !== src );
+  test.identical( got, undefined );
+  test.identical( src, clone );
+
+  /* */
+
+  function handleUp()
+  {
+    let it = this; debugger;
+    ups.push( _.mapExtend( null, it ) );
+    it.iterator.continue = false;
+    it.dstMaking = false;
+  }
+
+  function handleDown()
+  {
+    let it = this; debugger;
+    downs.push( _.mapExtend( null, it ) );
+  }
+
+}
+
 // --
 // declare
 // --
@@ -410,10 +474,11 @@ let Self =
   tests :
   {
 
-    trivial,
     iteratorResult,
+    basic,
     replaceOfSrc,
     exportStructure,
+    iteratorContinue,
 
   }
 

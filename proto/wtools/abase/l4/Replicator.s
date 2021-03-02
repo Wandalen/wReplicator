@@ -94,20 +94,10 @@ function optionsForm( routine, o )
 function optionsToIteration( o )
 {
   let it = Parent.optionsToIteration.call( this, o );
+  _.assert( _.property.has( it, 'dst' ) );
+  _.assert( it.dst === undefined );
   return it;
 }
-
-// //
-//
-// function perform()
-// {
-//   let it = this;
-//   _.assert( arguments.length === 0, 'Expects no arguments' );
-//   it.performBegin();
-//   it.iterate();
-//   it.performEnd();
-//   return it;
-// }
 
 //
 
@@ -194,10 +184,12 @@ function dstMake()
 {
   let it = this;
 
-  _.assert( it.dst === null );
+  _.assert( it.dst === undefined );
   _.assert( it.iterable !== null && it.iterable !== undefined );
   _.assert( it.dstMaking );
   _.assert( arguments.length === 0 );
+
+  /* xxx : move to methods */
 
   if( !it.iterable )
   {
@@ -219,6 +211,7 @@ function dstMake()
   {
     it.dst = new Set;
   }
+  else _.assert( 0 );
 
 }
 
@@ -388,7 +381,6 @@ function replicateIt_body( it )
   _.assert( arguments.length === 1, 'Expects single argument' );
   _.assert( _.looker.is( it.Looker ) );
   _.assert( it.looker === undefined );
-  // _.look.body( it ); /* yyy : perform */
   it.perform();
   return it;
 }
@@ -422,11 +414,8 @@ function replicate_body( it )
   let it2 = _.replicateIt.body( it );
   _.assert( it2 === it )
   _.assert( arguments.length === 1, 'Expects single argument' );
-
   if( it.error )
   throw it.error;
-
-  // debugger; /* yyy : result? */
   return it.result;
 }
 
@@ -460,12 +449,11 @@ Defaults.dst = null;
 let Replicator = Object.create( Parent );
 Replicator.constructor = function Replicator(){};
 Replicator.Looker = Replicator;
-Replicator.performMaking = replicateIt;
+Replicator.exec = replicateIt;
 Replicator.head = head;
 Replicator.optionsFromArguments = optionsFromArguments;
 Replicator.optionsForm = optionsForm;
 Replicator.optionsToIteration = optionsToIteration;
-// Replicator.perform = perform;
 Replicator.performBegin = performBegin;
 Replicator.performEnd = performEnd;
 Replicator.dstWriteDownEval = dstWriteDownEval;
@@ -478,7 +466,7 @@ let Iterator = Replicator.Iterator = _.mapExtend( null, Replicator.Iterator );
 Iterator.result = null;
 
 let Iteration = Replicator.Iteration = _.mapExtend( null, Replicator.Iteration );
-Iteration.dst = null;
+Iteration.dst = undefined;
 Iteration.dstMaking = true;
 Iteration.dstWriteDown = null;
 Iteration.dstWritingDown = true;
@@ -489,11 +477,6 @@ let ReplicatorExtension =
 {
 
   ... _.looker,
-
-  // is : _.looker.is,
-  // iteratorIs : _.looker.iteratorIs,
-  // iterationIs : _.looker.iterationIs,
-  // define : _.looker.define,
 
   Replicator,
   replicateIt,
