@@ -81,7 +81,7 @@ function basic( test )
   /* qqq : add subroutine clean() and extend test routine */
   let ups = [];
   let downs = [];
-  let routine = function(){};
+  let routine = () => {};
 
   let src =
   {
@@ -115,7 +115,7 @@ function basic( test )
 
   test.case = 'basic';
 
-  var got = _.replicate({ src : src });
+  var got = _.replicate({ src });
   test.true( got !== src );
   test.identical( got, clone );
   test.identical( src, clone );
@@ -137,7 +137,7 @@ function basic( test )
 
   var got = _.replicate
   ({
-    src : src,
+    src,
     onUp : handleUp,
     onDown : handleDown,
   });
@@ -432,7 +432,7 @@ function iteratorContinue( test )
 
   test.case = 'basic';
   debugger;
-  var got = _.replicate({ src : src, onUp : handleUp, onDown : handleDown });
+  var got = _.replicate({ src, onUp : handleUp, onDown : handleDown });
   debugger;
   test.true( got !== src );
   test.identical( got, undefined );
