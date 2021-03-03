@@ -104,6 +104,8 @@ function optionsToIteration( o )
 function performBegin()
 {
   let it = this;
+  Parent.performBegin.apply( it, arguments );
+  _.assert( Object.is( it.originalSrc, it.src ) );
   _.assert( it.iterationProper( it ) );
   _.assert( arguments.length === 0, 'Expects no arguments' );
   return it;
@@ -115,6 +117,7 @@ function performEnd()
 {
   let it = this;
   it.iterator.result = it.dst;
+  Parent.performEnd.apply( it, arguments );
   return it;
 }
 
