@@ -385,8 +385,8 @@ function exportStructure( test )
       {
         if( it.src === resource )
         {
-          it./*srcEffective*/src = _.mapExtend( null, it.src );
-          it.iterable = _.looker.containerNameToIdMap.aux;
+          it.src = _.mapExtend( null, it.src );
+          it.iterable = _.replicator.Looker.containerNameToIdMap.aux;
         }
       }
 
@@ -402,7 +402,8 @@ function exportStructure( test )
       }
       else
       {
-        _.Looker.Iterator.onAscend.call( this );
+        _.replicator.Replicator.onAscend.call( this );
+        // _.Looker.Iterator.onAscend.call( this );
       }
 
     }

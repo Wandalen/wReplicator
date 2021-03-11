@@ -33,8 +33,9 @@ _.assert( !!_realGlobal_ );
 // relations
 // --
 
-var Defaults = _.mapExtend( null, _.look.defaults )
-Defaults.Looker = null;
+// var Defaults = _.mapExtend( null, _.look.defaults );
+var Defaults = Object.create( null );
+// Defaults.Looker = null;
 Defaults.root = null;
 Defaults.src = null;
 Defaults.dst = null;
@@ -45,11 +46,14 @@ Defaults.dst = null;
 
 function head( routine, args )
 {
-  let o = Self.optionsFromArguments( args );
-  o.Looker = o.Looker || routine.defaults.Looker || Self;
-  _.routineOptionsPreservingUndefines( routine, o );
-  o.Looker.optionsForm( routine, o );
-  let it = o.Looker.optionsToIteration( o );
+  let o = routine.defaults.Looker.optionsFromArguments( args );
+  o.Looker = o.Looker || routine.defaults;
+  // _.routineOptionsPreservingUndefines( routine, o );
+  _.assertMapHasOnly( o, o.Looker );
+  // _.assert( o.Looker === routine.defaults );
+  // _.assert( _.prototype.has( o.Looker, routine.defaults ) );
+  // o.Looker.optionsForm( routine, o );
+  let it = o.Looker.optionsToIteration( null, o );
   return it;
 }
 
@@ -81,6 +85,7 @@ function optionsForm( routine, o )
   Parent.optionsForm.call( this, routine, o );
 
   _.assert( arguments.length === 2 );
+  _.assert( o.iteratorProper( o ) );
   _.assert( o.onUp === null || _.routineIs( o.onUp ) );
   _.assert( o.onDown === null || _.routineIs( o.onDown ) );
   _.assert( o.it === undefined );
@@ -91,9 +96,10 @@ function optionsForm( routine, o )
 
 //
 
-function optionsToIteration( o )
+function optionsToIteration( iterator, o )
 {
-  let it = Parent.optionsToIteration.call( this, o );
+  let it = Parent.optionsToIteration.call( this, iterator, o );
+  _.assert( arguments.length === 2 );
   _.assert( _.property.has( it, 'dst' ) );
   _.assert( it.dst === undefined );
   return it;
@@ -105,7 +111,7 @@ function performBegin()
 {
   let it = this;
   Parent.performBegin.apply( it, arguments );
-  _.assert( Object.is( it.originalSrc, it.src ) );
+  // _.assert( Object.is( it.originalSrc, it.src ) );
   _.assert( it.iterationProper( it ) );
   _.assert( arguments.length === 0, 'Expects no arguments' );
   return it;
@@ -138,7 +144,7 @@ function dstWriteDownEval()
       _.assert( 0, 'Cant write into terminal' );
     }
   }
-  else if( it.iterable === _.looker.containerNameToIdMap.countable )
+  else if( it.iterable === it.containerNameToIdMap.countable )
   {
     it.dstWriteDown = function dstWriteDown( eit )
     {
@@ -146,7 +152,7 @@ function dstWriteDownEval()
       this.dst.push( eit.dst );
     }
   }
-  else if( it.iterable === _.looker.containerNameToIdMap.aux )
+  else if( it.iterable === it.containerNameToIdMap.aux )
   {
     it.dstWriteDown = function dstWriteDown( eit )
     {
@@ -156,7 +162,7 @@ function dstWriteDownEval()
       this.dst[ eit.key ] = eit.dst;
     }
   }
-  else if( it.iterable === _.looker.containerNameToIdMap.hashMap )
+  else if( it.iterable === it.containerNameToIdMap.hashMap )
   {
     it.dstWriteDown = function dstWriteDown( eit )
     {
@@ -167,7 +173,7 @@ function dstWriteDownEval()
       this.dst.set( eit.key, eit.dst );
     }
   }
-  else if( it.iterable === _.looker.containerNameToIdMap.set )
+  else if( it.iterable === it.containerNameToIdMap.set )
   {
     it.dstWriteDown = function dstWriteDown( eit )
     {
@@ -198,19 +204,19 @@ function dstMake()
   {
     it.dst = it.src;
   }
-  else if( it.iterable === _.looker.containerNameToIdMap.countable )
+  else if( it.iterable === it.containerNameToIdMap.countable )
   {
     it.dst = [];
   }
-  else if( it.iterable === _.looker.containerNameToIdMap.aux )
+  else if( it.iterable === it.containerNameToIdMap.aux )
   {
     it.dst = Object.create( null );
   }
-  else if( it.iterable === _.looker.containerNameToIdMap.hashMap )
+  else if( it.iterable === it.containerNameToIdMap.hashMap )
   {
     it.dst = new HashMap;
   }
-  else if( it.iterable === _.looker.containerNameToIdMap.set )
+  else if( it.iterable === it.containerNameToIdMap.set )
   {
     it.dst = new Set;
   }
@@ -264,9 +270,10 @@ function visitDownEnd()
 
 //
 
-function replicate_head( routine, args )
+function exec_head( routine, args )
 {
-  return Self.head( routine, args );
+  _.assert( !!routine.defaults.Looker );
+  return routine.defaults.head( routine, args );
 }
 
 //
@@ -379,16 +386,16 @@ function replicate_head( routine, args )
 
 //
 
-function replicateIt_body( it )
-{
-  _.assert( arguments.length === 1, 'Expects single argument' );
-  _.assert( _.looker.is( it.Looker ) );
-  _.assert( it.looker === undefined );
-  it.perform();
-  return it;
-}
+// function execIt_body( it )
+// {
+//   _.assert( arguments.length === 1, 'Expects single argument' );
+//   _.assert( _.looker.is( it.Looker ) );
+//   _.assert( it.looker === undefined );
+//   it.perform();
+//   return it;
+// }
 
-var defaults = replicateIt_body.defaults = Defaults;
+// var defaults = execIt_body.defaults = Defaults;
 
 //
 
@@ -408,21 +415,23 @@ var defaults = replicateIt_body.defaults = Defaults;
  */
 
 
-let replicateIt = _.routineUnite( replicate_head, replicateIt_body );
+// let replicateIt = _.routineUnite( exec_head, execIt_body );
 
 //
 
-function replicate_body( it )
+function exec_body( it )
 {
-  let it2 = _.replicateIt.body( it );
-  _.assert( it2 === it )
+  // let it2 = _.replicateIt.body( it );
+  it.execIt.body.call( this, it );
+  // debugger; /* xxx */
+  // _.assert( it2 === it )
   _.assert( arguments.length === 1, 'Expects single argument' );
   if( it.error )
   throw it.error;
   return it.result;
 }
 
-_.routineExtend( replicate_body, replicateIt.body );
+// _.routineExtend( exec_body, replicateIt.body );
 
 //
 
@@ -437,42 +446,63 @@ _.routineExtend( replicate_body, replicateIt.body );
  * @module Tools/base/Replicator
  */
 
-let replicate = _.routineUnite( replicate_head, replicate_body );
+// let replicate = _.routineUnite( exec_head, exec_body );
 
 // --
 // relations
 // --
 
-var Defaults = _.mapExtend( null, _.look.defaults )
-Defaults.Looker = null;
-Defaults.root = null;
-Defaults.src = null;
-Defaults.dst = null;
+// var Defaults = _.mapExtend( null, _.look.defaults )
+// Defaults.Looker = null;
+// Defaults.root = null;
+// Defaults.src = null;
+// Defaults.dst = null;
 
-let Replicator = Object.create( Parent );
-Replicator.constructor = function Replicator(){};
-Replicator.Looker = Replicator;
-Replicator.exec = replicateIt;
-Replicator.head = head;
-Replicator.optionsFromArguments = optionsFromArguments;
-Replicator.optionsForm = optionsForm;
-Replicator.optionsToIteration = optionsToIteration;
-Replicator.performBegin = performBegin;
-Replicator.performEnd = performEnd;
-Replicator.dstWriteDownEval = dstWriteDownEval;
-Replicator.dstMake = dstMake;
-Replicator.srcChanged = srcChanged;
-Replicator.visitUpEnd = visitUpEnd;
-Replicator.visitDownEnd = visitDownEnd;
+// let Replicator = Object.create( Parent );
+let LookerExtension =
+{
+  constructor : function Replicator(){},
+  // Looker : Replicator,
+  // exec : replicateIt,
+  head,
+  optionsFromArguments,
+  optionsForm,
+  optionsToIteration,
+  performBegin,
+  performEnd,
+  dstWriteDownEval,
+  dstMake,
+  srcChanged,
+  visitUpEnd,
+  visitDownEnd,
+}
 
-let Iterator = Replicator.Iterator = _.mapExtend( null, Replicator.Iterator );
+// let Iterator =   Iterator : _.mapExtend( null, Replicator.Iterator );
+let Iterator = Object.create( null );
 Iterator.result = null;
 
-let Iteration = Replicator.Iteration = _.mapExtend( null, Replicator.Iteration );
+// let Iteration =   Iteration : _.mapExtend( null, Replicator.Iteration );
+let Iteration = Object.create( null );
 Iteration.dst = undefined;
 Iteration.dstMaking = true;
 Iteration.dstWriteDown = null;
 Iteration.dstWritingDown = true;
+
+let Replicator = _.looker.classDefine
+({
+  name : 'Replicator',
+  parent : _.looker.Looker,
+  defaults : Defaults,
+  looker : LookerExtension,
+  iterator : Iterator,
+  iteration : Iteration,
+  // iterationPreserve : IterationPreserve,
+  exec : { head : exec_head, body : exec_body },
+});
+
+//
+
+// execIt_body.defaults = Replicator;
 
 //
 
@@ -481,9 +511,10 @@ let ReplicatorExtension =
 
   ... _.looker,
 
+  Looker : Replicator,
   Replicator,
-  replicateIt,
-  replicate,
+  replicateIt : Replicator.execIt,
+  replicate : Replicator.exec,
 
 }
 
@@ -492,8 +523,8 @@ let ToolsExtension =
 
   // Replicator,
 
-  replicateIt,
-  replicate,
+  // replicateIt : Replicator.execIt,
+  replicate : Replicator.exec,
 
 }
 
