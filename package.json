@@ -1,6 +1,6 @@
 {
   "name": "wreplicator",
-  "version": "0.3.164",
+  "version": "0.3.165",
   "description": "Collection of cross-platform routines to replicate a complex data structure. It traverses input data structure deeply producing a copy of it.",
   "author": "Kostiantyn Wandalen <wanalen@01.school>",
   "license": "MIT",
@@ -22,12 +22,12 @@
     "url": "https://github.com/Wandalen/wReplicator/issues"
   },
   "dependencies": {
-    "wTools": "alpha",
-    "wlooker": "alpha"
+    "wTools": "gamma",
+    "wlooker": "gamma"
   },
   "devDependencies": {
     "eslint": "7.1.0",
-    "wTesting": "alpha",
+    "wTesting": "gamma",
     "wreplicator": "file:."
   },
   "keywords": [
