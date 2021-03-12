@@ -24,8 +24,8 @@ if( typeof module !== 'undefined' )
 
 let _global = _global_;
 let _ = _global_.wTools
-let Parent = _.Looker;
-_.replicator = _.replicator || Object.create( null );
+let Parent = _.looker.Looker;
+_.replicator = _.replicator || Object.create( _.looker );
 
 _.assert( !!_realGlobal_ );
 
@@ -33,12 +33,10 @@ _.assert( !!_realGlobal_ );
 // relations
 // --
 
-// var Defaults = _.mapExtend( null, _.look.defaults );
-var Defaults = Object.create( null );
-// Defaults.Looker = null;
-Defaults.root = null;
-Defaults.src = null;
-Defaults.dst = null;
+var Prime = Object.create( null );
+Prime.root = null;
+Prime.src = null;
+Prime.dst = null;
 
 // --
 // routines
@@ -48,11 +46,7 @@ function head( routine, args )
 {
   let o = routine.defaults.Looker.optionsFromArguments( args );
   o.Looker = o.Looker || routine.defaults;
-  // _.routineOptionsPreservingUndefines( routine, o );
   _.assertMapHasOnly( o, o.Looker );
-  // _.assert( o.Looker === routine.defaults );
-  // _.assert( _.prototype.has( o.Looker, routine.defaults ) );
-  // o.Looker.optionsForm( routine, o );
   let it = o.Looker.optionsToIteration( null, o );
   return it;
 }
@@ -111,7 +105,6 @@ function performBegin()
 {
   let it = this;
   Parent.performBegin.apply( it, arguments );
-  // _.assert( Object.is( it.originalSrc, it.src ) );
   _.assert( it.iterationProper( it ) );
   _.assert( arguments.length === 0, 'Expects no arguments' );
   return it;
@@ -386,19 +379,6 @@ function exec_head( routine, args )
 
 //
 
-// function execIt_body( it )
-// {
-//   _.assert( arguments.length === 1, 'Expects single argument' );
-//   _.assert( _.looker.is( it.Looker ) );
-//   _.assert( it.looker === undefined );
-//   it.perform();
-//   return it;
-// }
-
-// var defaults = execIt_body.defaults = Defaults;
-
-//
-
 /**
  * @summary Replicates a complex data structure using iterator.
  * @param {Object} o Options map
@@ -414,24 +394,14 @@ function exec_head( routine, args )
  * @module Tools/base/Replicator
  */
 
-
-// let replicateIt = _.routineUnite( exec_head, execIt_body );
-
-//
-
 function exec_body( it )
 {
-  // let it2 = _.replicateIt.body( it );
   it.execIt.body.call( this, it );
-  // debugger; /* xxx */
-  // _.assert( it2 === it )
   _.assert( arguments.length === 1, 'Expects single argument' );
   if( it.error )
   throw it.error;
   return it.result;
 }
-
-// _.routineExtend( exec_body, replicateIt.body );
 
 //
 
@@ -446,24 +416,13 @@ function exec_body( it )
  * @module Tools/base/Replicator
  */
 
-// let replicate = _.routineUnite( exec_head, exec_body );
-
 // --
 // relations
 // --
 
-// var Defaults = _.mapExtend( null, _.look.defaults )
-// Defaults.Looker = null;
-// Defaults.root = null;
-// Defaults.src = null;
-// Defaults.dst = null;
-
-// let Replicator = Object.create( Parent );
 let LookerExtension =
 {
   constructor : function Replicator(){},
-  // Looker : Replicator,
-  // exec : replicateIt,
   head,
   optionsFromArguments,
   optionsForm,
@@ -477,11 +436,9 @@ let LookerExtension =
   visitDownEnd,
 }
 
-// let Iterator =   Iterator : _.mapExtend( null, Replicator.Iterator );
 let Iterator = Object.create( null );
 Iterator.result = null;
 
-// let Iteration =   Iteration : _.mapExtend( null, Replicator.Iteration );
 let Iteration = Object.create( null );
 Iteration.dst = undefined;
 Iteration.dstMaking = true;
@@ -492,25 +449,19 @@ let Replicator = _.looker.classDefine
 ({
   name : 'Replicator',
   parent : _.looker.Looker,
-  defaults : Defaults,
+  prime : Prime,
   looker : LookerExtension,
   iterator : Iterator,
   iteration : Iteration,
-  // iterationPreserve : IterationPreserve,
   exec : { head : exec_head, body : exec_body },
 });
-
-//
-
-// execIt_body.defaults = Replicator;
 
 //
 
 let ReplicatorExtension =
 {
 
-  ... _.looker,
-
+  name : 'replicator',
   Looker : Replicator,
   Replicator,
   replicateIt : Replicator.execIt,
@@ -521,16 +472,13 @@ let ReplicatorExtension =
 let ToolsExtension =
 {
 
-  // Replicator,
-
-  // replicateIt : Replicator.execIt,
   replicate : Replicator.exec,
 
 }
 
 let Self = Replicator;
-_.mapSupplement( _, ToolsExtension );
-_.mapSupplement( _.replicator, ReplicatorExtension );
+_.mapExtend( _, ToolsExtension );
+_.mapExtend( _.replicator, ReplicatorExtension );
 
 // --
 // export
