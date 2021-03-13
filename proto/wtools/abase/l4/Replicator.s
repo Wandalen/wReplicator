@@ -115,7 +115,8 @@ function performBegin()
 function performEnd()
 {
   let it = this;
-  it.iterator.result = it.dst;
+  it.iterator.originalResult = it.dst;
+  it.iterator.result = it.iterator.originalResult;
   Parent.performEnd.apply( it, arguments );
   return it;
 }
@@ -437,7 +438,8 @@ let LookerExtension =
 }
 
 let Iterator = Object.create( null );
-Iterator.result = null;
+Iterator.result = undefined;
+Iterator.originalResult = undefined;
 
 let Iteration = Object.create( null );
 Iteration.dst = undefined;
@@ -455,6 +457,9 @@ let Replicator = _.looker.classDefine
   iteration : Iteration,
   exec : { head : exec_head, body : exec_body },
 });
+
+_.assert( _.property.has( Replicator.Iterator, 'result' ) && Replicator.Iterator.result === undefined );
+_.assert( _.property.has( Replicator.Iteration, 'dst' ) && Replicator.Iteration.dst === undefined );
 
 //
 
