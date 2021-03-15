@@ -34,9 +34,8 @@ _.assert( !!_realGlobal_ );
 // --
 
 var Prime = Object.create( null );
-Prime.root = null;
-Prime.src = null;
-Prime.dst = null;
+Prime.src = undefined;
+Prime.dst = undefined;
 
 // --
 // routines
@@ -74,22 +73,6 @@ function optionsFromArguments( args )
 
 //
 
-function optionsForm( routine, o )
-{
-  Parent.optionsForm.call( this, routine, o );
-
-  _.assert( arguments.length === 2 );
-  _.assert( o.iteratorProper( o ) );
-  _.assert( o.onUp === null || _.routineIs( o.onUp ) );
-  _.assert( o.onDown === null || _.routineIs( o.onDown ) );
-  _.assert( o.it === undefined );
-  _.assert( o.replicateOptions === undefined );
-
-  return o;
-}
-
-//
-
 function optionsToIteration( iterator, o )
 {
   let it = Parent.optionsToIteration.call( this, iterator, o );
@@ -97,6 +80,22 @@ function optionsToIteration( iterator, o )
   _.assert( _.property.has( it, 'dst' ) );
   _.assert( it.dst === undefined );
   return it;
+}
+
+//
+
+function iteratorInitEnd( iterator )
+{
+  let looker = this;
+
+  _.assert( arguments.length === 1 );
+  _.assert( iterator.iteratorProper( iterator ) );
+  _.assert( iterator.onUp === null || _.routineIs( iterator.onUp ) );
+  _.assert( iterator.onDown === null || _.routineIs( iterator.onDown ) );
+  _.assert( iterator.it === undefined );
+  _.assert( iterator.replicateOptions === undefined );
+
+  return Parent.iteratorInitEnd.call( this, iterator );
 }
 
 //
@@ -191,8 +190,6 @@ function dstMake()
   _.assert( it.iterable !== null && it.iterable !== undefined );
   _.assert( it.dstMaking );
   _.assert( arguments.length === 0 );
-
-  /* xxx : move to methods */
 
   if( !it.iterable )
   {
@@ -426,8 +423,8 @@ let LookerExtension =
   constructor : function Replicator(){},
   head,
   optionsFromArguments,
-  optionsForm,
   optionsToIteration,
+  iteratorInitEnd,
   performBegin,
   performEnd,
   dstWriteDownEval,
@@ -458,8 +455,13 @@ let Replicator = _.looker.classDefine
   exec : { head : exec_head, body : exec_body },
 });
 
-_.assert( _.property.has( Replicator.Iterator, 'result' ) && Replicator.Iterator.result === undefined );
+_.assert( !_.property.has( Replicator.Iteration, 'src' ) && Replicator.Iteration.src === undefined );
+_.assert( _.property.has( Replicator.IterationPreserve, 'src' ) && Replicator.IterationPreserve.src === undefined );
+_.assert( _.property.has( Replicator, 'src' ) && Replicator.src === undefined );
 _.assert( _.property.has( Replicator.Iteration, 'dst' ) && Replicator.Iteration.dst === undefined );
+_.assert( _.property.has( Replicator, 'dst' ) && Replicator.dst === undefined );
+_.assert( _.property.has( Replicator.Iterator, 'result' ) && Replicator.Iterator.result === undefined );
+_.assert( _.property.has( Replicator, 'result' ) && Replicator.result === undefined );
 
 //
 

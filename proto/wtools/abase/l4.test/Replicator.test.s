@@ -22,7 +22,6 @@ let _ = _global_.wTools;
 // tests
 // --
 
-/* xxx : write similar tests for other lookers */
 /* qqq : make sure all lookers with field result have such test routine */
 function iteratorResult( test )
 {
@@ -432,9 +431,7 @@ function iteratorContinue( test )
   /* */
 
   test.case = 'basic';
-  debugger;
   var got = _.replicate({ src, onUp : handleUp, onDown : handleDown });
-  debugger;
   test.true( got !== src );
   test.identical( got, undefined );
   test.identical( src, clone );
@@ -443,7 +440,7 @@ function iteratorContinue( test )
 
   function handleUp()
   {
-    let it = this; debugger;
+    let it = this;
     ups.push( _.mapExtend( null, it ) );
     it.iterator.continue = false;
     it.dstMaking = false;
@@ -451,7 +448,7 @@ function iteratorContinue( test )
 
   function handleDown()
   {
-    let it = this; debugger;
+    let it = this;
     downs.push( _.mapExtend( null, it ) );
   }
 
