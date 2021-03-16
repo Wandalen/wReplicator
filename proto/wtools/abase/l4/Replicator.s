@@ -395,9 +395,9 @@ function exec_head( routine, args )
 function exec_body( it )
 {
   it.execIt.body.call( this, it );
-  _.assert( arguments.length === 1, 'Expects single argument' );
-  if( it.error )
-  throw it.error;
+  // _.assert( arguments.length === 1, 'Expects single argument' );
+  // if( it.error && it.error !== true )
+  // throw it.error;
   return it.result;
 }
 
