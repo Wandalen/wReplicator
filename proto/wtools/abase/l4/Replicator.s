@@ -29,6 +29,8 @@ _.replicator = _.replicator || Object.create( _.looker );
 
 _.assert( !!_realGlobal_ );
 
+/* qqq : write nice example for readme */
+
 // --
 // relations
 // --
