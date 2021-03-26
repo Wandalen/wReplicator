@@ -22,9 +22,9 @@ if( typeof module !== 'undefined' )
 
 }
 
-let _global = _global_;
-let _ = _global_.wTools
-let Parent = _.looker.Looker;
+const _global = _global_;
+const _ = _global_.wTools
+const Parent = _.looker.Looker;
 _.replicator = _.replicator || Object.create( _.looker );
 
 _.assert( !!_realGlobal_ );
@@ -47,7 +47,7 @@ function head( routine, args )
 {
   let o = routine.defaults.Looker.optionsFromArguments( args );
   o.Looker = o.Looker || routine.defaults;
-  _.assertMapHasOnly( o, o.Looker );
+  _.map.assertHasOnly( o, o.Looker );
   let it = o.Looker.optionsToIteration( null, o );
   return it;
 }
@@ -485,7 +485,7 @@ let ToolsExtension =
 
 }
 
-let Self = Replicator;
+const Self = Replicator;
 _.mapExtend( _, ToolsExtension );
 _.mapExtend( _.replicator, ReplicatorExtension );
 
