@@ -1,6 +1,6 @@
 {
   "name" : "wreplicator",
-  "version" : "0.3.178",
+  "version" : "0.3.179",
   "description" : "Collection of cross-platform routines to replicate a complex data structure. It traverses input data structure deeply producing a copy of it.",
   "author" : "Kostiantyn Wandalen <wanalen@01.school>",
   "license" : "MIT",
