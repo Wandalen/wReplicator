@@ -80,8 +80,8 @@ path:
       raw: compiled
       content: prime
   npm.proto.entry:
-    - /pro/module/wReplicator/proto/wtools/abase/l4/Replicator.s
-    - /pro/module/wReplicator/proto/node_modules/wreplicator
+    - proto/wtools/abase/l4/Replicator.s
+    - proto/node_modules/wreplicator
 reflector:
   reflect.proto:
     inherit: predefined.*
