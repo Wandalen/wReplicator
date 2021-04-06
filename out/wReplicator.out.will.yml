@@ -2,10 +2,13 @@ format: outwillfile-2.0
 root:
   - wReplicator.out
 consistency:
-  ../.ex.will.yml: &ref_0
+  wReplicator.out.will.yml: &ref_0
+    hash: d82748fe6ec0e418e0af12b6b50fc94d
+    size: 38846
+  ../.ex.will.yml: &ref_1
     hash: 2c19bbee15c2b6eda152558ee15d6f46
     size: 1805
-  ../.im.will.yml: &ref_1
+  ../.im.will.yml: &ref_2
     hash: ebf1c10fb26424e3b4abc81459d71963
     size: 5033
 module:
@@ -19,18 +22,18 @@ module:
         it.
       enabled: 1
       version: 0.4.0
-      interpreters: &ref_2
+      interpreters:
         - njs >= 10.0.0
         - chrome >= 60.0.0
         - firefox >= 60.0.0
-      keywords: &ref_3
+      keywords:
         - wTools
       license: MIT
       author: Kostiantyn Wandalen <wanalen@01.school>
-      contributors: &ref_4
+      contributors:
         - Kostiantyn Wandalen <wanalen@01.school>
       npm.name: wreplicator
-      npm.scripts: &ref_5
+      npm.scripts:
         test: wtest .run proto/**
         docgen: wdocgen .build proto
     path:
@@ -161,9 +164,9 @@ module:
           - ../proto
           - ../proto/Integration.test.ss
           - ../proto/node_modules
+          - ../proto/node_modules/Tools
           - ../proto/node_modules/wreplicator
           - ../proto/wtools
-          - ../proto/wtools/Tools.s
           - ../proto/wtools/abase
           - ../proto/wtools/abase/l4
           - ../proto/wtools/abase/l4/Replicator.s
@@ -705,6 +708,24 @@ module:
           content: prime
         inherit:
           - files.transpile
+      exported.proto.export:
+        opts:
+          filePath: 'reflector::exported.proto.export'
+        criterion:
+          generated: 1
+          content: proto
+          export: 1
+        inherit:
+          - files.reflect
+      exported.files.proto.export:
+        opts:
+          filePath: 'reflector::exported.files.proto.export'
+        criterion:
+          generated: 1
+          content: proto
+          export: 1
+        inherit:
+          - files.reflect
     build:
       proto.export:
         steps:
@@ -793,8 +814,9 @@ module:
           content: proto
           export: 1
     consistency:
-      ../.ex.will.yml: *ref_0
-      ../.im.will.yml: *ref_1
+      wReplicator.out.will.yml: *ref_0
+      ../.ex.will.yml: *ref_1
+      ../.im.will.yml: *ref_2
   ../:
     about:
       name: wReplicator
@@ -805,13 +827,20 @@ module:
         it.
       enabled: 1
       version: 0.4.0
-      interpreters: *ref_2
-      keywords: *ref_3
+      interpreters:
+        - njs >= 10.0.0
+        - chrome >= 60.0.0
+        - firefox >= 60.0.0
+      keywords:
+        - wTools
       license: MIT
       author: Kostiantyn Wandalen <wanalen@01.school>
-      contributors: *ref_4
+      contributors:
+        - Kostiantyn Wandalen <wanalen@01.school>
       npm.name: wreplicator
-      npm.scripts: *ref_5
+      npm.scripts:
+        test: wtest .run proto/**
+        docgen: wdocgen .build proto
     path:
       module.willfiles:
         criterion:
@@ -1489,3 +1518,6 @@ module:
       ../.im.will.yml:
         hash: ebf1c10fb26424e3b4abc81459d71963
         size: 5033
+      wReplicator.out.will.yml:
+        hash: d82748fe6ec0e418e0af12b6b50fc94d
+        size: 38846
