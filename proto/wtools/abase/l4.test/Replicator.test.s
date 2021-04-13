@@ -154,9 +154,9 @@ function basic( test )
   test.true( got.i === src.i );
   test.true( got.j !== src.j );
 
-  let expectedUpPaths = [ '/', '/a', '/b', '/c', '/c/0', '/c/1', '/d', '/d/0', '/d/1', '/d/1/date', '/e', '/f', '/g', '/h', '/i', '/j', '/j/a', '/j/b' ];
+  let expectedUpPaths = [ '/', '/a', '/b', '/c', '/c/#0', '/c/#1', '/d', '/d/#0', '/d/#1', '/d/#1/date', '/e', '/f', '/g', '/h', '/i', '/j', '/j/a', '/j/b' ];
   let expectedUpIndices = [ null, 0, 1, 2, 0, 1, 3, 0, 1, 0, 4, 5, 6, 7, 8, 9, 0, 1 ];
-  let expectedDownPaths = [ '/a', '/b', '/c/0', '/c/1', '/c', '/d/0', '/d/1/date', '/d/1', '/d', '/e', '/f', '/g', '/h', '/i', '/j/a', '/j/b', '/j', '/' ];
+  let expectedDownPaths = [ '/a', '/b', '/c/#0', '/c/#1', '/c', '/d/#0', '/d/#1/date', '/d/#1', '/d', '/e', '/f', '/g', '/h', '/i', '/j/a', '/j/b', '/j', '/' ];
   let expectedDownIndices = [ 0, 1, 0, 1, 2, 0, 0, 1, 3, 4, 5, 6, 7, 8, 0, 1, 9, null ];
 
   test.description = 'expectedUpPaths';
@@ -203,9 +203,9 @@ function replaceOfSrc( test )
     j : { a : 1, b : 2 },
   }
 
-  let expectedUpPaths = [ '/', '/a', '/b', '/b/0', '/b/1', '/b/2', '/b/3', '/c', '/d', '/e', '/f', '/g', '/h', '/i', '/j' ];
+  let expectedUpPaths = [ '/', '/a', '/b', '/b/#0', '/b/#1', '/b/#2', '/b/#3', '/c', '/d', '/e', '/f', '/g', '/h', '/i', '/j' ];
   let expectedUpIndices = [ null, 0, 1, 0, 1, 2, 3, 2, 3, 4, 5, 6, 7, 8, 9 ];
-  let expectedDownPaths = [ '/a', '/b/0', '/b/1', '/b/2', '/b/3', '/b', '/c', '/d', '/e', '/f', '/g', '/h', '/i', '/j', '/' ];
+  let expectedDownPaths = [ '/a', '/b/#0', '/b/#1', '/b/#2', '/b/#3', '/b', '/c', '/d', '/e', '/f', '/g', '/h', '/i', '/j', '/' ];
   let expectedDownIndices = [ 0, 0, 1, 2, 3, 1, 2, 3, 4, 5, 6, 7, 8, 9, null ];
 
   let handleUpPaths = [];
@@ -385,7 +385,7 @@ function exportStructure( test )
         if( it.src === resource )
         {
           it.src = _.mapExtend( null, it.src );
-          it.iterable = _.replicator.Looker.containerNameToIdMap.aux;
+          it.iterable = _.replicator.Looker.ContainerNameToIdMap.aux;
         }
       }
 

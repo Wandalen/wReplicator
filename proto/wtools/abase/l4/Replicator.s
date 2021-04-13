@@ -139,7 +139,7 @@ function dstWriteDownEval()
       _.assert( 0, 'Cant write into terminal' );
     }
   }
-  else if( it.iterable === it.containerNameToIdMap.countable )
+  else if( it.iterable === it.ContainerNameToIdMap.countable )
   {
     it.dstWriteDown = function dstWriteDown( eit )
     {
@@ -147,7 +147,7 @@ function dstWriteDownEval()
       this.dst.push( eit.dst );
     }
   }
-  else if( it.iterable === it.containerNameToIdMap.aux )
+  else if( it.iterable === it.ContainerNameToIdMap.aux )
   {
     it.dstWriteDown = function dstWriteDown( eit )
     {
@@ -157,7 +157,7 @@ function dstWriteDownEval()
       this.dst[ eit.key ] = eit.dst;
     }
   }
-  else if( it.iterable === it.containerNameToIdMap.hashMap )
+  else if( it.iterable === it.ContainerNameToIdMap.hashMap )
   {
     it.dstWriteDown = function dstWriteDown( eit )
     {
@@ -168,7 +168,7 @@ function dstWriteDownEval()
       this.dst.set( eit.key, eit.dst );
     }
   }
-  else if( it.iterable === it.containerNameToIdMap.set )
+  else if( it.iterable === it.ContainerNameToIdMap.set )
   {
     it.dstWriteDown = function dstWriteDown( eit )
     {
@@ -197,19 +197,19 @@ function dstMake()
   {
     it.dst = it.src;
   }
-  else if( it.iterable === it.containerNameToIdMap.countable )
+  else if( it.iterable === it.ContainerNameToIdMap.countable )
   {
     it.dst = [];
   }
-  else if( it.iterable === it.containerNameToIdMap.aux )
+  else if( it.iterable === it.ContainerNameToIdMap.aux )
   {
     it.dst = Object.create( null );
   }
-  else if( it.iterable === it.containerNameToIdMap.hashMap )
+  else if( it.iterable === it.ContainerNameToIdMap.hashMap )
   {
     it.dst = new HashMap;
   }
-  else if( it.iterable === it.containerNameToIdMap.set )
+  else if( it.iterable === it.ContainerNameToIdMap.set )
   {
     it.dst = new Set;
   }
