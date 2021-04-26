@@ -173,13 +173,13 @@ function basic( test )
   function handleUp()
   {
     let it = this;
-    ups.push( _.mapExtend( null, it ) );
+    ups.push( _.props.extend( null, it ) );
   }
 
   function handleDown()
   {
     let it = this;
-    downs.push( _.mapExtend( null, it ) );
+    downs.push( _.props.extend( null, it ) );
   }
 
 }
@@ -274,7 +274,7 @@ function replaceOfSrc( test )
       it.iterable = null;
       it.srcChanged();
     }
-    else if( _.objectIs( it.src ) && _.mapKeys( it.src ).length === 2 )
+    else if( _.objectIs( it.src ) && _.props.keys( it.src ).length === 2 )
     {
       it.src = 'map replaced by this';
       it.iterable = null;
@@ -346,18 +346,18 @@ function exportStructure( test )
 
   function Obj1( o )
   {
-    return _.mapExtend( this, o );
+    return _.props.extend( this, o );
   }
   function Obj2( o )
   {
-    return _.mapExtend( this, o );
+    return _.props.extend( this, o );
   }
 
   function exportStructure( o )
   {
     let resource = this;
 
-    o = _.routineOptions( exportStructure, arguments );
+    o = _.routine.options_( exportStructure, arguments );
 
     if( o.src === null )
     o.src = resource;
@@ -384,7 +384,7 @@ function exportStructure( test )
       {
         if( it.src === resource )
         {
-          it.src = _.mapExtend( null, it.src );
+          it.src = _.props.extend( null, it.src );
           it.iterable = _.replicator.Looker.ContainerNameToIdMap.aux;
         }
       }
@@ -441,7 +441,7 @@ function iteratorContinue( test )
   function handleUp()
   {
     let it = this;
-    ups.push( _.mapExtend( null, it ) );
+    ups.push( _.props.extend( null, it ) );
     it.iterator.continue = false;
     it.dstMaking = false;
   }
@@ -449,7 +449,7 @@ function iteratorContinue( test )
   function handleDown()
   {
     let it = this;
-    downs.push( _.mapExtend( null, it ) );
+    downs.push( _.props.extend( null, it ) );
   }
 
 }

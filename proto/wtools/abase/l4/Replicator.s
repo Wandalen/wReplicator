@@ -40,7 +40,7 @@ Prime.src = undefined;
 Prime.dst = undefined;
 
 // --
-// routines
+// implementation
 // --
 
 function head( routine, args )
@@ -79,7 +79,7 @@ function optionsToIteration( iterator, o )
 {
   let it = Parent.optionsToIteration.call( this, iterator, o );
   _.assert( arguments.length === 2 );
-  _.assert( _.property.has( it, 'dst' ) );
+  _.assert( _.props.has( it, 'dst' ) );
   _.assert( it.dst === undefined );
   return it;
 }
@@ -283,7 +283,7 @@ function exec_head( routine, args )
 //   var size = 0;
 //   var offset = 0;
 //
-//   _.routineOptions( cloneDataSeparatingBuffers, o );
+//   _.routine.options_( cloneDataSeparatingBuffers, o );
 //   _.assert( arguments.length === 1, 'Expects single argument' );
 //
 //   /* onBuffer */
@@ -457,13 +457,13 @@ let Replicator = _.looker.classDefine
   exec : { head : exec_head, body : exec_body },
 });
 
-_.assert( !_.property.has( Replicator.Iteration, 'src' ) && Replicator.Iteration.src === undefined );
-_.assert( _.property.has( Replicator.IterationPreserve, 'src' ) && Replicator.IterationPreserve.src === undefined );
-_.assert( _.property.has( Replicator, 'src' ) && Replicator.src === undefined );
-_.assert( _.property.has( Replicator.Iteration, 'dst' ) && Replicator.Iteration.dst === undefined );
-_.assert( _.property.has( Replicator, 'dst' ) && Replicator.dst === undefined );
-_.assert( _.property.has( Replicator.Iterator, 'result' ) && Replicator.Iterator.result === undefined );
-_.assert( _.property.has( Replicator, 'result' ) && Replicator.result === undefined );
+_.assert( !_.props.has( Replicator.Iteration, 'src' ) && Replicator.Iteration.src === undefined );
+_.assert( _.props.has( Replicator.IterationPreserve, 'src' ) && Replicator.IterationPreserve.src === undefined );
+_.assert( _.props.has( Replicator, 'src' ) && Replicator.src === undefined );
+_.assert( _.props.has( Replicator.Iteration, 'dst' ) && Replicator.Iteration.dst === undefined );
+_.assert( _.props.has( Replicator, 'dst' ) && Replicator.dst === undefined );
+_.assert( _.props.has( Replicator.Iterator, 'result' ) && Replicator.Iterator.result === undefined );
+_.assert( _.props.has( Replicator, 'result' ) && Replicator.result === undefined );
 
 //
 
@@ -486,8 +486,8 @@ let ToolsExtension =
 }
 
 const Self = Replicator;
-_.mapExtend( _, ToolsExtension );
-_.mapExtend( _.replicator, ReplicatorExtension );
+_.props.extend( _, ToolsExtension );
+_.props.extend( _.replicator, ReplicatorExtension );
 
 // --
 // export
