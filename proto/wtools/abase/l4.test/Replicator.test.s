@@ -274,7 +274,7 @@ function replaceOfSrc( test )
       it.iterable = null;
       it.srcChanged();
     }
-    else if( _.objectIs( it.src ) && _.props.keys( it.src ).length === 2 )
+    else if( _.object.isBasic( it.src ) && _.props.keys( it.src ).length === 2 )
     {
       it.src = 'map replaced by this';
       it.iterable = null;
