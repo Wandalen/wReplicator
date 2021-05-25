@@ -369,15 +369,20 @@ function exportStructure( test )
     ({
       src : o.src,
       dst : o.dst,
-      onSrcChanged,
-      onAscend,
+      // onSrcChanged,
+      srcChanged,
+      ascend,
+      // onAscend,
     });
 
     return o.dst;
 
-    function onSrcChanged()
+    // function onSrcChanged()
+    function srcChanged()
     {
       let it = this;
+
+      it.Looker.srcChanged.call( it );
 
       if( !it.iterable )
       if( _.instanceIs( it.src ) )
@@ -385,13 +390,14 @@ function exportStructure( test )
         if( it.src === resource )
         {
           it.src = _.props.extend( null, it.src );
-          it.iterable = _.replicator.Looker.ContainerNameToIdMap.aux;
+          it.iterable = _.replicator.Looker.ContainerType.aux;
         }
+        it.dstWriteDownEval();
       }
 
     }
 
-    function onAscend()
+    function ascend()
     {
       let it = this;
 
@@ -401,8 +407,8 @@ function exportStructure( test )
       }
       else
       {
-        _.replicator.Replicator.onAscend.call( this );
-        // _.Looker.Iterator.onAscend.call( this );
+        it.Looker.ascend.call( it );
+        // _.Looker.Iterator.onAscend.call( it );
       }
 
     }

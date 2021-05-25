@@ -124,6 +124,7 @@ function performEnd()
 
 //
 
+/* xxx : remove the routine? */
 function dstWriteDownEval()
 {
   let it = this;
@@ -132,6 +133,7 @@ function dstWriteDownEval()
   _.assert( it.iterable !== null && it.iterable !== undefined );
   _.assert( it.dstWriteDown === null );
 
+  /* xxx : optimize */
   if( !it.iterable )
   {
     it.dstWriteDown = function dstWriteDown( eit )
@@ -139,7 +141,7 @@ function dstWriteDownEval()
       _.assert( 0, 'Cant write into terminal' );
     }
   }
-  else if( it.iterable === it.ContainerNameToIdMap.countable )
+  else if( it.iterable === it.ContainerType.countable )
   {
     it.dstWriteDown = function dstWriteDown( eit )
     {
@@ -147,7 +149,7 @@ function dstWriteDownEval()
       this.dst.push( eit.dst );
     }
   }
-  else if( it.iterable === it.ContainerNameToIdMap.aux )
+  else if( it.iterable === it.ContainerType.aux )
   {
     it.dstWriteDown = function dstWriteDown( eit )
     {
@@ -157,7 +159,7 @@ function dstWriteDownEval()
       this.dst[ eit.key ] = eit.dst;
     }
   }
-  else if( it.iterable === it.ContainerNameToIdMap.hashMap )
+  else if( it.iterable === it.ContainerType.hashMap )
   {
     it.dstWriteDown = function dstWriteDown( eit )
     {
@@ -168,7 +170,7 @@ function dstWriteDownEval()
       this.dst.set( eit.key, eit.dst );
     }
   }
-  else if( it.iterable === it.ContainerNameToIdMap.set )
+  else if( it.iterable === it.ContainerType.set )
   {
     it.dstWriteDown = function dstWriteDown( eit )
     {
@@ -179,6 +181,7 @@ function dstWriteDownEval()
       this.dst.set( eit.dst );
     }
   }
+  else _.assert( 0 );
 
 }
 
@@ -193,23 +196,23 @@ function dstMake()
   _.assert( it.dstMaking );
   _.assert( arguments.length === 0 );
 
-  if( !it.iterable )
+  if( !it.iterable || it.iterable === it.ContainerType.custom )
   {
     it.dst = it.src;
   }
-  else if( it.iterable === it.ContainerNameToIdMap.countable )
+  else if( it.iterable === it.ContainerType.countable )
   {
     it.dst = [];
   }
-  else if( it.iterable === it.ContainerNameToIdMap.aux )
+  else if( it.iterable === it.ContainerType.aux )
   {
     it.dst = Object.create( null );
   }
-  else if( it.iterable === it.ContainerNameToIdMap.hashMap )
+  else if( it.iterable === it.ContainerType.hashMap )
   {
     it.dst = new HashMap;
   }
-  else if( it.iterable === it.ContainerNameToIdMap.set )
+  else if( it.iterable === it.ContainerType.set )
   {
     it.dst = new Set;
   }
