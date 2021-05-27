@@ -466,7 +466,8 @@ let Replicator = _.looker.classDefine
   exec : { head : exec_head, body : exec_body },
 });
 
-_.assert( !_.props.has( Replicator.Iteration, 'src' ) && Replicator.Iteration.src === undefined );
+// _.assert( !_.props.has( Replicator.Iteration, 'src' ) && Replicator.Iteration.src === undefined );
+_.assert( !_.props.has( Replicator.Iteration, 'src' ) || Replicator.Iteration.src === undefined );
 _.assert( _.props.has( Replicator.IterationPreserve, 'src' ) && Replicator.IterationPreserve.src === undefined );
 _.assert( _.props.has( Replicator, 'src' ) && Replicator.src === undefined );
 _.assert( _.props.has( Replicator.Iteration, 'dst' ) && Replicator.Iteration.dst === undefined );
