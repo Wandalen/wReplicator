@@ -321,6 +321,7 @@ function exportStructure( test )
     exportStructure,
   }
   var got = obj1.exportStructure();
+  debugger;
   test.identical( got, exp );
   test.true( got !== obj1 )
 
@@ -362,18 +363,26 @@ function exportStructure( test )
     if( o.src === null )
     o.src = resource;
 
+    let dst = Object.create( null );
     if( o.dst === null )
-    o.dst = Object.create( null );
+    o.dst = dst;
 
-    o.dst = _.replicate
-    ({
+    let o2 =
+    {
       src : o.src,
       dst : o.dst,
       // onSrcChanged,
       srcChanged,
       ascend,
       // onAscend,
-    });
+    }
+
+    debugger;
+    o.dst = _.replicate( o2 );
+
+    test.true( o2.dst === dst );
+    test.true( o.dst === dst );
+    debugger;
 
     return o.dst;
 
@@ -382,7 +391,7 @@ function exportStructure( test )
     {
       let it = this;
 
-      it.Looker.srcChanged.call( it );
+      it.Seeker.srcChanged.call( it );
 
       if( !it.iterable )
       if( _.instanceIs( it.src ) )
@@ -390,7 +399,7 @@ function exportStructure( test )
         if( it.src === resource )
         {
           it.src = _.props.extend( null, it.src );
-          it.iterable = _.replicator.Looker.ContainerType.aux;
+          it.iterable = _.replicator.Seeker.ContainerType.aux;
         }
         it.dstWriteDownEval();
       }
@@ -407,8 +416,8 @@ function exportStructure( test )
       }
       else
       {
-        it.Looker.ascend.call( it );
-        // _.Looker.Iterator.onAscend.call( it );
+        it.Seeker.ascend.call( it );
+        // _.looker.Looker.Iterator.onAscend.call( it );
       }
 
     }

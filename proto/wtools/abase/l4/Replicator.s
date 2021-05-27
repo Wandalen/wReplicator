@@ -45,10 +45,10 @@ Prime.dst = undefined;
 
 function head( routine, args )
 {
-  let o = routine.defaults.Looker.optionsFromArguments( args );
-  o.Looker = o.Looker || routine.defaults;
-  _.map.assertHasOnly( o, o.Looker );
-  let it = o.Looker.optionsToIteration( null, o );
+  let o = routine.defaults.Seeker.optionsFromArguments( args );
+  o.Seeker = o.Seeker || routine.defaults;
+  _.map.assertHasOnly( o, o.Seeker );
+  let it = o.Seeker.optionsToIteration( null, o );
   return it;
 }
 
@@ -77,10 +77,12 @@ function optionsFromArguments( args )
 
 function optionsToIteration( iterator, o )
 {
+  // debugger;
   let it = Parent.optionsToIteration.call( this, iterator, o );
   _.assert( arguments.length === 2 );
   _.assert( _.props.has( it, 'dst' ) );
-  _.assert( it.dst === undefined );
+  // _.assert( it.dst === undefined );
+  _.assert( it.dst !== null );
   return it;
 }
 
@@ -191,10 +193,13 @@ function dstMake()
 {
   let it = this;
 
-  _.assert( it.dst === undefined );
   _.assert( it.iterable !== null && it.iterable !== undefined );
   _.assert( it.dstMaking );
   _.assert( arguments.length === 0 );
+
+  _.assert( it.dst !== null );
+  if( it.dst !== undefined )
+  return;
 
   if( !it.iterable || it.iterable === it.ContainerType.custom )
   {
@@ -268,7 +273,7 @@ function visitDownEnd()
 
 function exec_head( routine, args )
 {
-  _.assert( !!routine.defaults.Looker );
+  _.assert( !!routine.defaults.Seeker );
   return routine.defaults.head( routine, args );
 }
 
@@ -399,6 +404,7 @@ function exec_head( routine, args )
 
 function exec_body( it )
 {
+  // debugger;
   it.execIt.body.call( this, it );
   // _.assert( arguments.length === 1, 'Expects single argument' );
   // if( it.error && it.error !== true )
@@ -454,7 +460,7 @@ let Replicator = _.looker.classDefine
   name : 'Replicator',
   parent : _.looker.Looker,
   prime : Prime,
-  looker : LookerExtension,
+  seeker : LookerExtension,
   iterator : Iterator,
   iteration : Iteration,
   exec : { head : exec_head, body : exec_body },
@@ -474,7 +480,7 @@ let ReplicatorExtension =
 {
 
   name : 'replicator',
-  Looker : Replicator,
+  Seeker : Replicator,
   Replicator,
   replicateIt : Replicator.execIt,
   replicate : Replicator.exec,
