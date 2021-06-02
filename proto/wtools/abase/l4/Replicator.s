@@ -497,7 +497,7 @@ let ToolsExtension =
 
 const Self = Replicator;
 _.props.extend( _, ToolsExtension );
-_.props.extend( _.replicator, ReplicatorExtension );
+/* _.props.extend */Object.assign( _.replicator, ReplicatorExtension );
 
 // --
 // export
