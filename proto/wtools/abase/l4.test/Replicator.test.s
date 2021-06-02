@@ -76,13 +76,14 @@ function iteratorResult( test )
 
 function basic( test )
 {
+
   /* qqq : use collecting of it principle in all relevant test routines */
   /* qqq : add subroutine clean() and extend test routine */
   let ups = [];
   let downs = [];
   let routine = () => {};
 
-  let src =
+  var src =
   {
     a : 1,
     b : 's',
@@ -167,6 +168,14 @@ function basic( test )
   test.identical( downs.map( ( it ) => it.path ), expectedDownPaths );
   test.description = 'expectedDownIndices';
   test.identical( downs.map( ( it ) => it.index ), expectedDownIndices );
+
+  /* */
+
+  test.case = 'single src';
+  var src = [ 1, 3 ];
+  var got = _.replicate({ src })
+  test.identical( got, src );
+  test.true( got !== src );
 
   /* */
 
