@@ -330,7 +330,6 @@ function exportStructure( test )
     exportStructure,
   }
   var got = obj1.exportStructure();
-  debugger;
   test.identical( got, exp );
   test.true( got !== obj1 )
 
@@ -386,12 +385,10 @@ function exportStructure( test )
       // onAscend,
     }
 
-    debugger;
     o.dst = _.replicate( o2 );
 
     test.true( o2.dst === dst );
     test.true( o.dst === dst );
-    debugger;
 
     return o.dst;
 
