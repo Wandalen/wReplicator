@@ -74,6 +74,7 @@ function iteratorResult( test )
 
 //
 
+/* qqq : split the test routine */
 function basic( test )
 {
 
@@ -190,6 +191,147 @@ function basic( test )
     let it = this;
     downs.push( _.props.extend( null, it ) );
   }
+
+}
+
+//
+
+function replicateCallingCallback( test )
+{
+
+  /* */
+
+  test.case = 'l1';
+  var src = [ 'a', 13, 'b' ];
+  var exp = [ 'aa', 13, 'bb' ];
+  var got = _.replicate( null, src, ( e, k, it ) =>
+  {
+    if( _.str.is( it.src ) )
+    {
+      it.dst = it.src + it.src;
+      it.dstMaking = false;
+    }
+  });
+  test.identical( got, exp );
+  test.true( got !== exp );
+
+  /* */
+
+}
+
+//
+
+function replicateArray( test )
+{
+
+  /* */
+
+  test.case = 'l1';
+  var src = [ 'a', 'b' ];
+  var exp = [ 'a', 'b' ];
+  var got = _.replicate( null, src );
+  test.identical( got, exp );
+  test.true( got !== exp );
+
+  /* */
+
+  test.case = 'l2';
+  var src = [ [ 'a', 'b' ], [ 'c' ], 'd' ];
+  var exp = [ [ 'a', 'b' ], [ 'c' ], 'd' ];
+  var got = _.replicate( null, src );
+  test.identical( got, exp );
+  test.true( got !== exp );
+  test.true( got[ 0 ] !== exp[ 0 ] );
+  test.true( got[ 1 ] !== exp[ 1 ] );
+
+  /* */
+
+}
+
+//
+
+function replicateSet( test )
+{
+
+  /* */
+
+  test.case = 'l1';
+  var src = new Set([ 'a', 'b' ]);
+  var exp = new Set([ 'a', 'b' ]);
+  var got = _.replicate( null, src );
+  test.identical( got, exp );
+  test.true( got !== exp );
+
+  /* */
+
+  test.case = 'l2';
+  var src = new Set([ new Set([ 'a', 'b' ]), new Set([ 'c' ]), 'd' ]);
+  var exp = new Set([ new Set([ 'a', 'b' ]), new Set([ 'c' ]), 'd' ]);
+  var got = _.replicate( null, src );
+  test.identical( got, exp );
+  test.true( got !== exp );
+  test.true( [ ... got ][ 0 ] !== [ ... exp ][ 0 ] );
+  test.true( [ ... got ][ 1 ] !== [ ... exp ][ 1 ] );
+
+  /* */
+
+}
+
+//
+
+function replicateMap( test )
+{
+
+  /* */
+
+  test.case = 'l1';
+  var src = { 'a' : 'av', 'b' : 'bv' };
+  var exp = { 'a' : 'av', 'b' : 'bv' };
+  var got = _.replicate( null, src );
+  test.identical( got, exp );
+  test.true( got !== exp );
+
+  /* */
+
+  test.case = 'l2';
+  var src = { 'ab' : { 'a' : 'av', 'b' : 'bv' }, 'c' : { 'c' : 'cv' }, 'd' : 'dv' };
+  var exp = { 'ab' : { 'a' : 'av', 'b' : 'bv' }, 'c' : { 'c' : 'cv' }, 'd' : 'dv' };
+  var got = _.replicate( null, src );
+  test.identical( got, exp );
+  test.true( got !== exp );
+  test.true( got[ 'ab' ] !== exp[ 'ab' ] );
+  test.true( got[ 'c' ] !== exp[ 'c' ] );
+
+  /* */
+
+}
+
+//
+
+function replicateHashMap( test )
+{
+
+  /* */
+
+  test.case = 'l1';
+  var src = new HashMap([ [ 'a' , 'av' ], [ 'b' , 'bv' ] ]);
+  var exp = new HashMap([ [ 'a' , 'av' ], [ 'b' , 'bv' ] ]);
+  var got = _.replicate( null, src );
+  test.identical( got, exp );
+  test.true( got !== exp );
+
+  /* */
+
+  test.case = 'l2';
+  var src = new HashMap([ [ 'ab', new HashMap([ [ 'a', 'av' ], [ 'b', 'bv' ] ]) ], [ 'c', new HashMap([ [ 'c', 'cv' ] ]) ], [ 'd', 'dv' ] ]);
+  var exp = new HashMap([ [ 'ab', new HashMap([ [ 'a', 'av' ], [ 'b', 'bv' ] ]) ], [ 'c', new HashMap([ [ 'c', 'cv' ] ]) ], [ 'd', 'dv' ] ]);
+  var got = _.replicate( null, src );
+  test.identical( got, exp );
+  test.true( got !== exp );
+  test.true( got.get( 'ab' ) !== exp.get( 'ab' ) );
+  test.true( got.get( 'c' ) !== exp.get( 'c' ) );
+
+  /* */
 
 }
 
@@ -392,7 +534,6 @@ function exportStructure( test )
 
     return o.dst;
 
-    // function onSrcChanged()
     function srcChanged()
     {
       let it = this;
@@ -407,7 +548,6 @@ function exportStructure( test )
           it.src = _.props.extend( null, it.src );
           it.iterable = _.replicator.Seeker.ContainerType.aux;
         }
-        it.dstWriteDownEval();
       }
 
     }
@@ -423,9 +563,7 @@ function exportStructure( test )
       else
       {
         it.Seeker.ascend.call( it );
-        // _.looker.Looker.Iterator.onAscend.call( it );
       }
-
     }
 
   }
@@ -495,6 +633,11 @@ const Proto =
 
     iteratorResult,
     basic,
+    replicateCallingCallback,
+    replicateArray,
+    replicateSet,
+    replicateMap,
+    replicateHashMap,
     replaceOfSrc,
     exportStructure,
     iteratorContinue,

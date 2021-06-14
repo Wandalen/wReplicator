@@ -9,10 +9,6 @@
   @extends Tools
 */
 
-/**
- * Collection of cross-platform routines to replicate a complex data structure.
- */
-
 if( typeof module !== 'undefined' )
 {
 
@@ -43,30 +39,20 @@ Prime.dst = undefined;
 // implementation
 // --
 
-function head( routine, args )
-{
-  let o = routine.defaults.Seeker.optionsFromArguments( args );
-  o.Seeker = o.Seeker || routine.defaults;
-  _.map.assertHasOnly( o, o.Seeker );
-  let it = o.Seeker.optionsToIteration( null, o );
-  return it;
-}
-
-//
-
 function optionsFromArguments( args )
 {
   let o = args[ 0 ];
 
   if( args.length === 2 )
   {
-    if( _.replicator.iterationIs( args[ 0 ] ) )
-    o = { it : args[ 0 ], dst : args[ 1 ] }
-    else
-    o = { src : args[ 0 ], dst : args[ 1 ] }
+    o = { dst : args[ 0 ], src : args[ 1 ] }
+  }
+  else if( args.length === 3 )
+  {
+    o = { dst : args[ 0 ], src : args[ 1 ], onUp : args[ 2 ] }
   }
 
-  _.assert( args.length === 1 || args.length === 2 );
+  _.assert( args.length === 1 || args.length === 2 || args.length === 3 );
   _.assert( arguments.length === 1 );
   _.assert( _.mapIs( o ) );
 
@@ -77,12 +63,12 @@ function optionsFromArguments( args )
 
 function optionsToIteration( iterator, o )
 {
-  // debugger;
   let it = Parent.optionsToIteration.call( this, iterator, o );
   _.assert( arguments.length === 2 );
   _.assert( _.props.has( it, 'dst' ) );
-  // _.assert( it.dst === undefined );
   _.assert( it.dst !== null );
+  _.assert( it.iterator.onUp === null || _.routineIs( it.iterator.onUp ) );
+  _.assert( it.iterator.onDown === null || _.routineIs( it.iterator.onDown ) );
   return it;
 }
 
@@ -90,27 +76,14 @@ function optionsToIteration( iterator, o )
 
 function iteratorInitEnd( iterator )
 {
-  let looker = this;
+  Parent.iteratorInitEnd.call( this, iterator );
 
-  _.assert( arguments.length === 1 );
-  _.assert( iterator.iteratorProper( iterator ) );
-  _.assert( iterator.onUp === null || _.routineIs( iterator.onUp ) );
-  _.assert( iterator.onDown === null || _.routineIs( iterator.onDown ) );
-  _.assert( iterator.it === undefined );
-  _.assert( iterator.replicateOptions === undefined );
+  if( iterator.dst === null )
+  iterator.dst = undefined;
+  if( iterator.firstIterationPrototype.dst === null )
+  iterator.firstIterationPrototype.dst = undefined;
 
-  return Parent.iteratorInitEnd.call( this, iterator );
-}
-
-//
-
-function performBegin()
-{
-  let it = this;
-  Parent.performBegin.apply( it, arguments );
-  _.assert( it.iterationProper( it ) );
-  _.assert( arguments.length === 0, 'Expects no arguments' );
-  return it;
+  return iterator;
 }
 
 //
@@ -126,65 +99,62 @@ function performEnd()
 
 //
 
-/* xxx : remove the routine? */
-function dstWriteDownEval()
+function dstWriteDown( eit )
 {
   let it = this;
-  it.dstWriteDown = null;
+  it.DstWriteDown[ it.iterable ].call( it, eit );
+}
 
-  _.assert( it.iterable !== null && it.iterable !== undefined );
-  _.assert( it.dstWriteDown === null );
+//
 
-  /* xxx : optimize */
-  if( !it.iterable )
-  {
-    it.dstWriteDown = function dstWriteDown( eit )
-    {
-      _.assert( 0, 'Cant write into terminal' );
-    }
-  }
-  else if( it.iterable === it.ContainerType.countable )
-  {
-    it.dstWriteDown = function dstWriteDown( eit )
-    {
-      if( eit.dst !== undefined )
-      this.dst.push( eit.dst );
-    }
-  }
-  else if( it.iterable === it.ContainerType.aux )
-  {
-    it.dstWriteDown = function dstWriteDown( eit )
-    {
-      if( eit.dst === undefined )
-      delete this.dst[ eit.key ];
-      else
-      this.dst[ eit.key ] = eit.dst;
-    }
-  }
-  else if( it.iterable === it.ContainerType.hashMap )
-  {
-    it.dstWriteDown = function dstWriteDown( eit )
-    {
-      _.assert( 0, 'not tested' ); /* qqq : test */
-      if( eit.dst === undefined )
-      this.dst.delete( eit.key );
-      else
-      this.dst.set( eit.key, eit.dst );
-    }
-  }
-  else if( it.iterable === it.ContainerType.set )
-  {
-    it.dstWriteDown = function dstWriteDown( eit )
-    {
-      _.assert( 0, 'not tested' ); /* qqq : test */
-      if( eit.dst === undefined )
-      this.dst.delete( eit.dst );
-      else
-      this.dst.set( eit.dst );
-    }
-  }
-  else _.assert( 0 );
+function _dstWriteDownTerminal( eit )
+{
+  _.assert( 0, 'Cant write into terminal' );
+}
 
+//
+
+function _dstWriteDownCountable( eit )
+{
+  if( eit.dst !== undefined )
+  this.dst.push( eit.dst );
+}
+
+//
+
+function _dstWriteDownAux( eit )
+{
+  if( eit.dst === undefined )
+  delete this.dst[ eit.key ];
+  else
+  this.dst[ eit.key ] = eit.dst;
+}
+
+//
+
+function _dstWriteDownHashMap( eit )
+{
+  if( eit.dst === undefined )
+  this.dst.delete( eit.key );
+  else
+  this.dst.set( eit.key, eit.dst );
+}
+
+//
+
+function _dstWriteDownSet( eit )
+{
+  if( eit.dst === undefined )
+  this.dst.delete( eit.dst );
+  else
+  this.dst.add( eit.dst );
+}
+
+//
+
+function _dstWriteDownCustom( eit )
+{
+  _.assert( 0, 'not implemented' );
 }
 
 //
@@ -196,48 +166,74 @@ function dstMake()
   _.assert( it.iterable !== null && it.iterable !== undefined );
   _.assert( it.dstMaking );
   _.assert( arguments.length === 0 );
-
   _.assert( it.dst !== null );
-  if( it.dst !== undefined )
-  return;
 
-  if( !it.iterable || it.iterable === it.ContainerType.custom )
-  {
-    it.dst = it.src;
-  }
-  else if( it.iterable === it.ContainerType.countable )
-  {
-    it.dst = [];
-  }
-  else if( it.iterable === it.ContainerType.aux )
-  {
-    it.dst = Object.create( null );
-  }
-  else if( it.iterable === it.ContainerType.hashMap )
-  {
-    it.dst = new HashMap;
-  }
-  else if( it.iterable === it.ContainerType.set )
-  {
-    it.dst = new Set;
-  }
-  else _.assert( 0 );
+  // if( it.dst !== undefined )
+  // return;
 
+  it.dst = it.ContainerMake[ it.iterable ].call( it );
 }
 
 //
 
-function srcChanged()
+function _containerMakeTerminal()
+{
+  let it = this;
+  return it.src;
+}
+
+//
+
+function _containerMakeCountable()
+{
+  let it = this;
+  return [];
+}
+
+//
+
+function _containerMakeAux()
+{
+  let it = this;
+  return Object.create( null );
+}
+
+//
+
+function _containerMakeHashMap()
+{
+  let it = this;
+  return new HashMap;
+}
+
+//
+
+function _containerMakeSet()
+{
+  let it = this;
+  return new Set;
+}
+
+//
+
+function _containerMakeCustom()
+{
+  let it = this;
+  return it.src;
+}
+
+//
+
+function visitUpBegin()
 {
   let it = this;
 
-  _.assert( arguments.length === 0, 'Expects no arguments' );
+  let r = Parent.visitUpBegin.call( it );
 
-  let result = Parent.srcChanged.call( it );
+  // if( it.dstMaking )
+  // it.dstMake();
 
-  it.dstWriteDownEval();
-
-  return result;
+  return r;
 }
 
 //
@@ -257,15 +253,9 @@ function visitUpEnd()
 function visitDownEnd()
 {
   let it = this;
-
   _.assert( it.iterable !== null && it.iterable !== undefined );
-
   if( it.down && it.dstWritingDown )
-  {
-    _.assert( _.routineIs( it.down.dstWriteDown ) );
-    it.down.dstWriteDown( it );
-  }
-
+  it.down.dstWriteDown( it );
   return Parent.visitDownEnd.call( it );
 }
 
@@ -275,6 +265,14 @@ function exec_head( routine, args )
 {
   _.assert( !!routine.defaults.Seeker );
   return routine.defaults.head( routine, args );
+}
+
+//
+
+function exec_body( it )
+{
+  it.execIt.body.call( this, it );
+  return it.result;
 }
 
 //
@@ -402,16 +400,6 @@ function exec_head( routine, args )
  * @module Tools/base/Replicator
  */
 
-function exec_body( it )
-{
-  // debugger;
-  it.execIt.body.call( this, it );
-  // _.assert( arguments.length === 1, 'Expects single argument' );
-  // if( it.error && it.error !== true )
-  // throw it.error;
-  return it.result;
-}
-
 //
 
 /**
@@ -429,20 +417,52 @@ function exec_body( it )
 // relations
 // --
 
+let DstWriteDown =
+[
+  _dstWriteDownTerminal,
+  _dstWriteDownCountable,
+  _dstWriteDownAux,
+  _dstWriteDownHashMap,
+  _dstWriteDownSet,
+  _dstWriteDownCustom,
+]
+
+let ContainerMake =
+[
+  _containerMakeTerminal,
+  _containerMakeCountable,
+  _containerMakeAux,
+  _containerMakeHashMap,
+  _containerMakeSet,
+  _containerMakeCustom,
+]
+
 let LookerExtension =
 {
   constructor : function Replicator(){},
-  head,
   optionsFromArguments,
   optionsToIteration,
   iteratorInitEnd,
-  performBegin,
   performEnd,
-  dstWriteDownEval,
+  dstWriteDown,
+  _dstWriteDownTerminal,
+  _dstWriteDownCountable,
+  _dstWriteDownAux,
+  _dstWriteDownHashMap,
+  _dstWriteDownSet,
+  _dstWriteDownCustom,
   dstMake,
-  srcChanged,
+  _containerMakeTerminal,
+  _containerMakeCountable,
+  _containerMakeAux,
+  _containerMakeHashMap,
+  _containerMakeSet,
+  _containerMakeCustom,
+  visitUpBegin,
   visitUpEnd,
   visitDownEnd,
+  DstWriteDown,
+  ContainerMake,
 }
 
 let Iterator = Object.create( null );
@@ -452,7 +472,6 @@ Iterator.originalResult = undefined;
 let Iteration = Object.create( null );
 Iteration.dst = undefined;
 Iteration.dstMaking = true;
-Iteration.dstWriteDown = null;
 Iteration.dstWritingDown = true;
 
 let Replicator = _.looker.classDefine
@@ -466,8 +485,7 @@ let Replicator = _.looker.classDefine
   exec : { head : exec_head, body : exec_body },
 });
 
-// _.assert( !_.props.has( Replicator.Iteration, 'src' ) && Replicator.Iteration.src === undefined );
-_.assert( !_.props.has( Replicator.Iteration, 'src' ) || Replicator.Iteration.src === undefined );
+_.assert( _.props.has( Replicator.Iteration, 'src' ) && Replicator.Iteration.src === undefined );
 _.assert( _.props.has( Replicator.IterationPreserve, 'src' ) && Replicator.IterationPreserve.src === undefined );
 _.assert( _.props.has( Replicator, 'src' ) && Replicator.src === undefined );
 _.assert( _.props.has( Replicator.Iteration, 'dst' ) && Replicator.Iteration.dst === undefined );
@@ -475,7 +493,9 @@ _.assert( _.props.has( Replicator, 'dst' ) && Replicator.dst === undefined );
 _.assert( _.props.has( Replicator.Iterator, 'result' ) && Replicator.Iterator.result === undefined );
 _.assert( _.props.has( Replicator, 'result' ) && Replicator.result === undefined );
 
-//
+// --
+// replicator extension
+// --
 
 let ReplicatorExtension =
 {
@@ -488,6 +508,12 @@ let ReplicatorExtension =
 
 }
 
+Object.assign( _.replicator, ReplicatorExtension );
+
+// --
+// tools extension
+// --
+
 let ToolsExtension =
 {
 
@@ -495,9 +521,7 @@ let ToolsExtension =
 
 }
 
-const Self = Replicator;
-_.props.extend( _, ToolsExtension );
-/* _.props.extend */Object.assign( _.replicator, ReplicatorExtension );
+Object.assign( _, ToolsExtension );
 
 // --
 // export
