@@ -567,6 +567,36 @@ function exportStructure( test )
 
 //
 
+function firstIterationDstMaking( test )
+{
+
+  /* */
+
+  test.case = 'basic';
+
+  var src = [ 1, 2, 3 ];
+  var dst = [];
+  var opts =
+  {
+    src,
+    dst,
+  }
+  var got = _.replicate( opts );
+
+  test.true( opts.dst === dst );
+  test.true( got === dst );
+
+  /* */
+
+}
+
+firstIterationDstMaking.description =
+`
+- dstMaking of the first iteration prototype should be set to false if dst is specified
+`
+
+//
+
 function iteratorContinue( test )
 {
   let ups = [];
@@ -635,6 +665,7 @@ const Proto =
     replicateHashMap,
     replaceOfSrc,
     exportStructure,
+    firstIterationDstMaking,
     iteratorContinue,
 
   }

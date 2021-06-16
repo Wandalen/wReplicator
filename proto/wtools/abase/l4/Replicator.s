@@ -80,6 +80,8 @@ function iteratorInitEnd( iterator )
 
   if( iterator.dst === null )
   iterator.dst = undefined;
+  if( iterator.dst !== undefined )
+  iterator.firstIterationPrototype.dstMaking = false;
   if( iterator.firstIterationPrototype.dst === null )
   iterator.firstIterationPrototype.dst = undefined;
 
