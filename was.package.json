@@ -1,22 +1,37 @@
 {
-  "name" : "wreplicator",
-  "version" : "0.3.202",
-  "description" : "Collection of cross-platform routines to replicate a complex data structure. It traverses input data structure deeply producing a copy of it.",
-  "author" : "Kostiantyn Wandalen <wanalen@01.school>",
-  "license" : "MIT",
-  "main" : "proto/node_modules/wreplicator",
-  "files" : [ "proto/wtools/abase/l4", "out", "proto/node_modules", "proto/node_modules/Tools", "proto/node_modules/wreplicator" ],
-  "scripts" : { "test" : "wtest .run 'proto/**' rapidity:-3", "docgen" : "wdocgen proto" },
-  "repository" :
-  {
-    "type" : "git",
-    "url" : "https://github.com/Wandalen/wReplicator.git"
+  "name": "wreplicator",
+  "version": "0.3.203",
+  "description": "Collection of cross-platform routines to replicate a complex data structure. It traverses input data structure deeply producing a copy of it.",
+  "author": "Kostiantyn Wandalen <wanalen@01.school>",
+  "license": "MIT",
+  "main": "proto/node_modules/wreplicator",
+  "files": [
+    "proto/wtools/abase/l4",
+    "out",
+    "proto/node_modules",
+    "proto/node_modules/Tools",
+    "proto/node_modules/wreplicator"
+  ],
+  "scripts": {
+    "test": "wtest .run 'proto/**' rapidity:-3",
+    "docgen": "wdocgen proto"
   },
-  "bugs" :
-  {
-    "url" : "https://github.com/Wandalen/wReplicator/issues"
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Wandalen/wReplicator.git"
   },
-  "dependencies" : { "wTools" : "", "wlooker" : "" },
-  "devDependencies" : { "wTesting" : "", "eslint" : "7.1.0" },
-  "keywords" : [ "wTools" ]
+  "bugs": {
+    "url": "https://github.com/Wandalen/wReplicator/issues"
+  },
+  "dependencies": {
+    "wTools": "",
+    "wlooker": ""
+  },
+  "devDependencies": {
+    "wTesting": "",
+    "eslint": "7.1.0"
+  },
+  "keywords": [
+    "wTools"
+  ]
 }
