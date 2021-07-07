@@ -314,8 +314,8 @@ function replicateHashMap( test )
   /* */
 
   test.case = 'l1';
-  var src = new HashMap([ [ 'a' , 'av' ], [ 'b' , 'bv' ] ]);
-  var exp = new HashMap([ [ 'a' , 'av' ], [ 'b' , 'bv' ] ]);
+  var src = new HashMap([ [ 'a', 'av' ], [ 'b', 'bv' ] ]);
+  var exp = new HashMap([ [ 'a', 'av' ], [ 'b', 'bv' ] ]);
   var got = _.replicate( null, src );
   test.identical( got, exp );
   test.true( got !== exp );
