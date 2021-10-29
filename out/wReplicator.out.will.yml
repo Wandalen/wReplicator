@@ -3,8 +3,8 @@ root:
   - wReplicator.out
 consistency:
   ../will.yml: &ref_0
-    hash: d4931b9d4a7d40a03bd2e96dba994992
-    size: 6602
+    hash: 6b2adac396fee33bd1fa82d2895d669d
+    size: 6461
 module:
   wReplicator.out:
     about:
@@ -372,9 +372,6 @@ module:
           content: npm
         inherit:
           - module.export
-      npm.publish:
-        opts:
-          shell: npm publish
       npm.generate.debug.raw:
         opts:
           entryPath: 'path::entry.out.*=1'
@@ -710,12 +707,6 @@ module:
           - 'step::doc.export'
         criterion:
           content: doc
-          export: 1
-      npm.export:
-        steps:
-          - 'step::npm.publish'
-        criterion:
-          content: npm
           export: 1
       export:
         steps:
@@ -1070,9 +1061,6 @@ module:
           content: npm
         inherit:
           - module.export
-      npm.publish:
-        opts:
-          shell: npm publish
       npm.generate.debug.raw:
         opts:
           entryPath: 'path::entry.out.*=1'
@@ -1409,12 +1397,6 @@ module:
         criterion:
           content: doc
           export: 1
-      npm.export:
-        steps:
-          - 'step::npm.publish'
-        criterion:
-          content: npm
-          export: 1
       export:
         steps:
           - 'build::proto.export'
@@ -1472,5 +1454,5 @@ module:
           - 'build::npm'
     consistency:
       ../will.yml:
-        hash: d4931b9d4a7d40a03bd2e96dba994992
-        size: 6602
+        hash: 6b2adac396fee33bd1fa82d2895d669d
+        size: 6461
