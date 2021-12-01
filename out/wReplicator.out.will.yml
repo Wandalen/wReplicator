@@ -3,8 +3,8 @@ root:
   - wReplicator.out
 consistency:
   ../will.yml: &ref_0
-    hash: 6b2adac396fee33bd1fa82d2895d669d
-    size: 6461
+    hash: 60884dd39c00b47ba12aa52332acd3dd
+    size: 6469
 module:
   wReplicator.out:
     about:
@@ -1454,5 +1454,5 @@ module:
           - 'build::npm'
     consistency:
       ../will.yml:
-        hash: 6b2adac396fee33bd1fa82d2895d669d
-        size: 6461
+        hash: 60884dd39c00b47ba12aa52332acd3dd
+        size: 6469
